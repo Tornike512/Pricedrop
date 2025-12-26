@@ -7,10 +7,10 @@
     "GRAD" 25;
 
   /* COLORS */
-  --foreground-100: #000000; /* Black */
-  --foreground-200: #121212; /* Dark gray */
-  --background-100: #ffffff; /* White */
-  --background-200: #f8f9fa; /* Off-white */
+  --foreground-100: #2B2A2A; /* Dark gray */
+  --foreground-200: #5A7ACD; /* Blue */
+  --background-100: #F5F2F2; /* Light beige */
+  --background-200: #FEB05D; /* Orange */
 
   /* FONT WEIGHT */
   --fw-thin: 100;
@@ -55,27 +55,27 @@
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --foreground-100: #ffffff; /* White */
-    --foreground-200: #f8f9fa; /* Off-white */
-    --background-100: #000000; /* Black */
-    --background-200: #121212; /* Dark gray */
+    --foreground-100: #F5F2F2; /* Light beige */
+    --foreground-200: #FEB05D; /* Orange */
+    --background-100: #2B2A2A; /* Dark gray */
+    --background-200: #5A7ACD; /* Blue */
   }
 }
 
 [data-theme="light"] {
   color-scheme: light;
-  --foreground-100: #000000; /* Black */
-  --foreground-200: #121212; /* Dark gray */
-  --background-100: #ffffff; /* White */
-  --background-200: #f8f9fa; /* Off-white */
+  --foreground-100: #2B2A2A; /* Dark gray */
+  --foreground-200: #5A7ACD; /* Blue */
+  --background-100: #F5F2F2; /* Light beige */
+  --background-200: #FEB05D; /* Orange */
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --foreground-100: #ffffff; /* White */
-  --foreground-200: #f8f9fa; /* Off-white */
-  --background-100: #000000; /* Black */
-  --background-200: #121212; /* Dark gray */
+  --foreground-100: #F5F2F2; /* Light beige */
+  --foreground-200: #FEB05D; /* Orange */
+  --background-100: #2B2A2A; /* Dark gray */
+  --background-200: #5A7ACD; /* Blue */
 }
 
 /* biome-ignore lint/nursery/noUnknownAtRule: @theme */
