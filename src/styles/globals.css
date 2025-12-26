@@ -7,10 +7,10 @@
     "GRAD" 25;
 
   /* COLORS */
-  --foreground-100: #2B2A2A; /* Dark gray */
-  --foreground-200: #5A7ACD; /* Blue */
-  --background-100: #F5F2F2; /* Light beige */
-  --background-200: #FEB05D; /* Orange */
+  --foreground-100: #2b2a2a; /* Dark gray */
+  --foreground-200: #5a7acd; /* Blue */
+  --background-100: #f5f2f2; /* Light beige */
+  --background-200: #feb05d; /* Orange */
 
   /* FONT WEIGHT */
   --fw-thin: 100;
@@ -55,27 +55,27 @@
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --foreground-100: #F5F2F2; /* Light beige */
-    --foreground-200: #FEB05D; /* Orange */
-    --background-100: #2B2A2A; /* Dark gray */
-    --background-200: #5A7ACD; /* Blue */
+    --foreground-100: #f5f2f2; /* Light beige */
+    --foreground-200: #feb05d; /* Orange */
+    --background-100: #2b2a2a; /* Dark gray */
+    --background-200: #5a7acd; /* Blue */
   }
 }
 
 [data-theme="light"] {
   color-scheme: light;
-  --foreground-100: #2B2A2A; /* Dark gray */
-  --foreground-200: #5A7ACD; /* Blue */
-  --background-100: #F5F2F2; /* Light beige */
-  --background-200: #FEB05D; /* Orange */
+  --foreground-100: #2b2a2a; /* Dark gray */
+  --foreground-200: #5a7acd; /* Blue */
+  --background-100: #f5f2f2; /* Light beige */
+  --background-200: #feb05d; /* Orange */
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --foreground-100: #F5F2F2; /* Light beige */
-  --foreground-200: #FEB05D; /* Orange */
-  --background-100: #2B2A2A; /* Dark gray */
-  --background-200: #5A7ACD; /* Blue */
+  --foreground-100: #f5f2f2; /* Light beige */
+  --foreground-200: #feb05d; /* Orange */
+  --background-100: #2b2a2a; /* Dark gray */
+  --background-200: #5a7acd; /* Blue */
 }
 
 /* biome-ignore lint/nursery/noUnknownAtRule: @theme */
