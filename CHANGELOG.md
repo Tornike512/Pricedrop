@@ -1,3 +1,11 @@
+## 1.0.0 (2025-12-26)
+
+* fix: standardize color variable casing in CSS ([6fe6f5a](https://github.com/Tornike512/Pricedrop/commit/6fe6f5a))
+* feat: add pricedrop logo and remove unused SVG files ([2fea16d](https://github.com/Tornike512/Pricedrop/commit/2fea16d))
+* feat: update color scheme variables for light and dark themes ([2f4ec8a](https://github.com/Tornike512/Pricedrop/commit/2f4ec8a))
+* feat: update pricedrop logo image ([dc646f2](https://github.com/Tornike512/Pricedrop/commit/dc646f2))
+* Initial commit ([50a34b0](https://github.com/Tornike512/Pricedrop/commit/50a34b0))
+
 ## 0.0.1 (2025-06-18)
 
 * chore: :wrench: add husky ([d269613](https://github.com/davitJabushanuri/nextjs-starter/commit/d269613))
