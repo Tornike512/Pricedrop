@@ -1,0 +1,100 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.1.3/schema.json",
+
+  "files": {
+    "ignoreUnknown": false,
+
+    "includes": [
+      "src/**/*",
+      "playwright.config.ts",
+      "vitest.config.ts",
+      "biome.json",
+      "package.json"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "formatWithErrors": true,
+    "lineWidth": 80,
+    "indentWidth": 2
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": "warn",
+      "complexity": {
+        "recommended": true
+      },
+      "performance": {
+        "recommended": true
+      },
+      "security": {
+        "recommended": true
+      },
+      "suspicious": {
+        "recommended": true,
+        "noDebugger": "error",
+        "noConsole": "warn"
+      },
+      "style": {
+        "recommended": true,
+        "noShoutyConstants": "warn",
+
+        "useConst": {
+          "level": "warn",
+          "fix": "unsafe",
+          "options": {}
+        },
+        "useTemplate": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {}
+        }
+      },
+      "correctness": {
+        "recommended": true,
+        "noUnusedVariables": {
+          "options": {
+            "ignoreRestSiblings": true
+          },
+          "level": "error",
+          "fix": "none"
+        }
+      },
+      "nursery": {
+        "recommended": true,
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {
+            "attributes": ["classList"],
+            "functions": ["clsx", "cva", "tw"]
+          }
+        }
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "arrowParentheses": "always",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
+      "enabled": true,
+      "trailingCommas": "all"
+    }
+  },
+
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "recommended": true,
+      "source": {
+        "recommended": true,
+        "organizeImports": "on"
+      }
+    }
+  }
+}

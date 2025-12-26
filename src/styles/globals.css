@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  font-variation-settings:
+    "wght" 400,
+    "GRAD" 25;
+
+  /* COLORS */
+  --foreground-100: #000000; /* Black */
+  --foreground-200: #121212; /* Dark gray */
+  --background-100: #ffffff; /* White */
+  --background-200: #f8f9fa; /* Off-white */
+
+  /* FONT WEIGHT */
+  --fw-thin: 100;
+  --fw-extralight: 200;
+  --fw-light: 300;
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+  --fw-black: 900;
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --fw-thin: 200;
+    --fw-extralight: 300;
+    --fw-light: 400;
+    --fw-normal: 500;
+    --fw-medium: 600;
+    --fw-semibold: 700;
+    --fw-bold: 800;
+    --fw-extrabold: 900;
+    --fw-black: 900;
+  }
+}
+
+@media (prefers-contrast: less) {
+  :root {
+    --fw-thin: 100;
+    --fw-extralight: 100;
+    --fw-light: 200;
+    --fw-normal: 300;
+    --fw-medium: 400;
+    --fw-semibold: 500;
+    --fw-bold: 600;
+    --fw-extrabold: 700;
+    --fw-black: 800;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --foreground-100: #ffffff; /* White */
+    --foreground-200: #f8f9fa; /* Off-white */
+    --background-100: #000000; /* Black */
+    --background-200: #121212; /* Dark gray */
+  }
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --foreground-100: #000000; /* Black */
+  --foreground-200: #121212; /* Dark gray */
+  --background-100: #ffffff; /* White */
+  --background-200: #f8f9fa; /* Off-white */
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --foreground-100: #ffffff; /* White */
+  --foreground-200: #f8f9fa; /* Off-white */
+  --background-100: #000000; /* Black */
+  --background-200: #121212; /* Dark gray */
+}
+
+/* biome-ignore lint/nursery/noUnknownAtRule: @theme */
+@theme inline {
+  /* COLORS */
+  --color-foreground-100: var(--foreground-100);
+  --color-foreground-200: var(--foreground-200);
+  --color-background-100: var(--background-100);
+  --color-background-200: var(--background-200);
+
+  /* FONT SIZE */
+  --text-xs: clamp(0.625rem, 2vw, 0.75rem); /* 10px to 12px */
+  --text-sm: clamp(0.75rem, 2.5vw, 0.875rem); /* 12px to 14px */
+  --text-base: clamp(0.875rem, 3vw, 1rem); /* 14px to 16px */
+  --text-lg: clamp(1rem, 3.5vw, 1.125rem); /* 16px to 18px */
+  --text-xl: clamp(1.125rem, 4vw, 1.25rem); /* 18px to 20px */
+  --text-2xl: clamp(1.25rem, 5vw, 1.5rem); /* 20px to 24px */
+  --text-3xl: clamp(1.2rem, 5vw, 1.875rem); /*24px to 30px */
+  --text-4xl: clamp(1.875rem, 6vw, 2.25rem); /* 30px to 36px */
+  --text-5xl: clamp(2.25rem, 5vw, 3rem); /* 36px to 48px */
+
+  /* FONT WEIGHT */
+  --font-weight-thin: var(--fw-thin);
+  --font-weight-extralight: var(--fw-extralight);
+  --font-weight-light: var(--fw-light);
+  --font-weight-normal: var(--fw-normal);
+  --font-weight-medium: var(--fw-medium);
+  --font-weight-semibold: var(--fw-semibold);
+  --font-weight-bold: var(--fw-bold);
+  --font-weight-extrabold: var(--fw-extrabold);
+  --font-weight-black: var(--fw-black);
+}
+
+button,
+a,
+input {
+  &:focus-visible {
+    outline: 2px solid var(--color-primary-100);
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+p {
+  max-width: 75ch;
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+    scroll-behavior: auto;
+  }
+}
