@@ -1,3 +1,9 @@
+## 1.2.0 (2025-12-29)
+
+* chore: update version to 1.1.0 in package.json and add new entries to CHANGELOG.md ([10a080b](https://github.com/Tornike512/Pricedrop/commit/10a080b))
+* feat: implement CarsPage component with filtering, sorting, and pagination functionality ([7508fa3](https://github.com/Tornike512/Pricedrop/commit/7508fa3))
+* feat: refactor CarsPage to derive manufacturers, models, fuel types, and gear types from car data ([5889c9e](https://github.com/Tornike512/Pricedrop/commit/5889c9e))
+
 ## 1.1.0 (2025-12-29)
 
 * chore: update version to 1.0.0 in package.json and add changelog entries ([201946e](https://github.com/Tornike512/Pricedrop/commit/201946e))
