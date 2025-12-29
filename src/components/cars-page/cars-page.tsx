@@ -1,24 +1,38 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import type { LookupMap } from "@/components/car-card";
 import {
   DEFAULT_FILTERS,
   FilterPanel,
   type FilterState,
+  type LookupItem,
+  type Manufacturer,
+  type Model,
 } from "@/components/filter-panel";
 import {
   ListingsPage,
   type SortOption,
   type ViewMode,
 } from "@/components/listings-page";
-import {
-  FUEL_TYPES,
-  GEAR_TYPES,
-  LOOKUP_MAP,
-  MANUFACTURERS,
-  MODELS,
-} from "@/data/mock-data";
 import { useGetCars } from "@/hooks/use-get-cars";
+
+// Default lookup labels for fuel and gear types
+const FUEL_TYPE_LABELS: Record<number, string> = {
+  1: "Petrol",
+  2: "Diesel",
+  3: "Hybrid",
+  4: "Electric",
+  5: "LPG",
+  6: "CNG",
+};
+
+const GEAR_TYPE_LABELS: Record<number, string> = {
+  1: "Manual",
+  2: "Automatic",
+  3: "Tiptronic",
+  4: "CVT",
+};
 
 export function CarsPage() {
   // Filter state
@@ -55,6 +69,82 @@ export function CarsPage() {
     if (!data?.pages) return [];
     return data.pages.flatMap((page) => page.items);
   }, [data]);
+
+  // Derive manufacturers from car data
+  const manufacturers = useMemo<Manufacturer[]>(() => {
+    const map = new Map<number, string>();
+    for (const car of allCars) {
+      if (!map.has(car.man_id) && car.manufacturer_name) {
+        map.set(car.man_id, car.manufacturer_name);
+      }
+    }
+    return Array.from(map.entries())
+      .map(([man_id, manufacturer_name]) => ({ man_id, manufacturer_name }))
+      .sort((a, b) =>
+        (a.manufacturer_name ?? "").localeCompare(b.manufacturer_name ?? ""),
+      );
+  }, [allCars]);
+
+  // Derive models from car data
+  const models = useMemo<Model[]>(() => {
+    const map = new Map<number, { man_id: number; model_name: string }>();
+    for (const car of allCars) {
+      if (!map.has(car.model_id) && car.model_name) {
+        map.set(car.model_id, {
+          man_id: car.man_id,
+          model_name: car.model_name,
+        });
+      }
+    }
+    return Array.from(map.entries())
+      .map(([model_id, { man_id, model_name }]) => ({
+        model_id,
+        man_id,
+        model_name,
+      }))
+      .sort((a, b) => (a.model_name ?? "").localeCompare(b.model_name ?? ""));
+  }, [allCars]);
+
+  // Derive fuel types from car data
+  const fuelTypes = useMemo<LookupItem[]>(() => {
+    const ids = new Set<number>();
+    for (const car of allCars) {
+      if (car.fuel_type_id != null) {
+        ids.add(car.fuel_type_id);
+      }
+    }
+    return Array.from(ids)
+      .map((id) => ({
+        id,
+        label: FUEL_TYPE_LABELS[id] ?? `Fuel Type ${id}`,
+      }))
+      .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
+  }, [allCars]);
+
+  // Derive gear types from car data
+  const gearTypes = useMemo<LookupItem[]>(() => {
+    const ids = new Set<number>();
+    for (const car of allCars) {
+      if (car.gear_type_id != null) {
+        ids.add(car.gear_type_id);
+      }
+    }
+    return Array.from(ids)
+      .map((id) => ({
+        id,
+        label: GEAR_TYPE_LABELS[id] ?? `Gear Type ${id}`,
+      }))
+      .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
+  }, [allCars]);
+
+  // Build lookup map for CarCard
+  const lookupMap = useMemo<LookupMap>(
+    () => ({
+      fuelTypes: FUEL_TYPE_LABELS,
+      gearTypes: GEAR_TYPE_LABELS,
+    }),
+    [],
+  );
 
   // Apply client-side filtering for multi-select filters and deals only
   const filteredCars = useMemo(() => {
@@ -198,10 +288,10 @@ export function CarsPage() {
           <FilterPanel
             filters={filters}
             onFilterChange={handleFilterChange}
-            manufacturers={MANUFACTURERS}
-            models={MODELS}
-            fuelTypes={FUEL_TYPES}
-            gearTypes={GEAR_TYPES}
+            manufacturers={manufacturers}
+            models={models}
+            fuelTypes={fuelTypes}
+            gearTypes={gearTypes}
             applyOnChange={true}
           />
 
@@ -214,7 +304,7 @@ export function CarsPage() {
               pageSize={pageSize}
               totalPages={totalPages}
               loading={isLoading}
-              lookup={LOOKUP_MAP}
+              lookup={lookupMap}
               sortBy={sortBy}
               viewMode={viewMode}
               favorites={favorites}
