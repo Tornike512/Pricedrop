@@ -121,22 +121,22 @@ export function RangeSlider({
   const maxPercent = getPercent(effectiveMax);
 
   return (
-    <div className="space-y-3">
-      <span className="block font-medium text-foreground-100 text-sm">
+    <div className="space-y-4">
+      <span className="block font-medium text-[var(--color-text-primary)] text-sm">
         {label}
       </span>
 
-      {/* Slider Track - biome-ignore: Track click is a convenience feature, keyboard users interact with the slider handles directly */}
+      {/* Slider Track */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: Slider handles inside are the focusable elements */}
       {/* biome-ignore lint/a11y/noStaticElementInteractions: Track is decorative */}
       <div
         ref={trackRef}
-        className="relative h-2 cursor-pointer rounded-full bg-gray-200"
+        className="relative h-2 cursor-pointer rounded-full bg-[var(--color-bg-tertiary)]"
         onClick={handleTrackClick}
       >
         {/* Active Range */}
         <div
-          className="absolute h-full rounded-full bg-foreground-200"
+          className="absolute h-full rounded-full bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)]"
           style={{
             left: `${minPercent}%`,
             width: `${maxPercent - minPercent}%`,
@@ -149,10 +149,11 @@ export function RangeSlider({
           tabIndex={0}
           className={cn(
             "-translate-x-1/2 -translate-y-1/2 absolute top-1/2 h-5 w-5 cursor-pointer rounded-full",
-            "border-2 border-foreground-200 bg-white shadow-md",
-            "transition-transform hover:scale-110",
-            "focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground-200",
-            dragging === "min" && "scale-110",
+            "bg-[var(--color-surface)] shadow-[var(--shadow-md)]",
+            "border-2 border-[var(--color-accent-primary)]",
+            "transition-all duration-200 hover:scale-110",
+            "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)] focus-visible:ring-offset-2",
+            dragging === "min" && "scale-125 shadow-[var(--shadow-lg)]",
           )}
           style={{ left: `${minPercent}%` }}
           onMouseDown={() => setDragging("min")}
@@ -169,10 +170,11 @@ export function RangeSlider({
           tabIndex={0}
           className={cn(
             "-translate-x-1/2 -translate-y-1/2 absolute top-1/2 h-5 w-5 cursor-pointer rounded-full",
-            "border-2 border-foreground-200 bg-white shadow-md",
-            "transition-transform hover:scale-110",
-            "focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground-200",
-            dragging === "max" && "scale-110",
+            "bg-[var(--color-surface)] shadow-[var(--shadow-md)]",
+            "border-2 border-[var(--color-accent-primary)]",
+            "transition-all duration-200 hover:scale-110",
+            "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)] focus-visible:ring-offset-2",
+            dragging === "max" && "scale-125 shadow-[var(--shadow-lg)]",
           )}
           style={{ left: `${maxPercent}%` }}
           onMouseDown={() => setDragging("max")}
@@ -186,7 +188,7 @@ export function RangeSlider({
 
       {/* Value Display / Inputs */}
       {showInputs ? (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <input
             type="text"
             value={valueMin !== null ? formatInput(valueMin) : ""}
@@ -198,12 +200,16 @@ export function RangeSlider({
             }}
             placeholder={formatInput(min)}
             className={cn(
-              "w-full rounded-md border border-gray-200 px-3 py-1.5 text-sm",
-              "focus:border-foreground-200 focus:outline-none focus:ring-1 focus:ring-foreground-200",
+              "w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]",
+              "px-3 py-2.5 text-[var(--color-text-primary)] text-sm",
+              "placeholder:text-[var(--color-text-muted)]",
+              "transition-all duration-200",
+              "focus:border-[var(--color-accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-primary)]/20",
+              "focus:bg-[var(--color-surface)]",
             )}
             aria-label={`Minimum ${label}`}
           />
-          <span className="text-gray-400">—</span>
+          <span className="font-light text-[var(--color-text-muted)]">to</span>
           <input
             type="text"
             value={valueMax !== null ? formatInput(valueMax) : ""}
@@ -215,17 +221,25 @@ export function RangeSlider({
             }}
             placeholder={formatInput(max)}
             className={cn(
-              "w-full rounded-md border border-gray-200 px-3 py-1.5 text-sm",
-              "focus:border-foreground-200 focus:outline-none focus:ring-1 focus:ring-foreground-200",
+              "w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]",
+              "px-3 py-2.5 text-[var(--color-text-primary)] text-sm",
+              "placeholder:text-[var(--color-text-muted)]",
+              "transition-all duration-200",
+              "focus:border-[var(--color-accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-primary)]/20",
+              "focus:bg-[var(--color-surface)]",
             )}
             aria-label={`Maximum ${label}`}
           />
-          {unit && <span className="text-gray-500 text-sm">{unit}</span>}
+          {unit && (
+            <span className="shrink-0 text-[var(--color-text-muted)] text-sm">
+              {unit}
+            </span>
+          )}
         </div>
       ) : (
-        <div className="flex justify-between text-gray-600 text-sm">
-          <span>{formatValue(effectiveMin)}</span>
-          <span>{formatValue(effectiveMax)}</span>
+        <div className="flex justify-between text-[var(--color-text-secondary)] text-sm">
+          <span className="font-medium">{formatValue(effectiveMin)}</span>
+          <span className="font-medium">{formatValue(effectiveMax)}</span>
         </div>
       )}
     </div>

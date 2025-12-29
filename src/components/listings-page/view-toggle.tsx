@@ -15,16 +15,16 @@ function GridIcon({ className }: { className?: string }) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
       aria-hidden="true"
     >
-      <rect x="3" y="3" width="7" height="7" />
-      <rect x="14" y="3" width="7" height="7" />
-      <rect x="3" y="14" width="7" height="7" />
-      <rect x="14" y="14" width="7" height="7" />
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
     </svg>
   );
 }
@@ -36,18 +36,15 @@ function ListIcon({ className }: { className?: string }) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
       aria-hidden="true"
     >
-      <line x1="8" y1="6" x2="21" y2="6" />
-      <line x1="8" y1="12" x2="21" y2="12" />
-      <line x1="8" y1="18" x2="21" y2="18" />
-      <line x1="3" y1="6" x2="3.01" y2="6" />
-      <line x1="3" y1="12" x2="3.01" y2="12" />
-      <line x1="3" y1="18" x2="3.01" y2="18" />
+      <rect x="3" y="4" width="18" height="4" rx="1" />
+      <rect x="3" y="10" width="18" height="4" rx="1" />
+      <rect x="3" y="16" width="18" height="4" rx="1" />
     </svg>
   );
 }
@@ -56,7 +53,10 @@ export function ViewToggle({ value, onChange }: ViewToggleProps) {
   return (
     // biome-ignore lint/a11y/useSemanticElements: role="group" is appropriate for toggle button groups
     <div
-      className="flex rounded-md border border-gray-200 bg-white p-1"
+      className={cn(
+        "flex rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-1.5",
+        "shadow-[var(--shadow-xs)]",
+      )}
       role="group"
       aria-label="View mode"
     >
@@ -64,10 +64,11 @@ export function ViewToggle({ value, onChange }: ViewToggleProps) {
         type="button"
         onClick={() => onChange("grid")}
         className={cn(
-          "flex h-8 w-8 items-center justify-center rounded transition-colors",
+          "flex h-9 w-9 items-center justify-center rounded-lg",
+          "transition-all duration-200",
           value === "grid"
-            ? "bg-foreground-200 text-white"
-            : "text-gray-500 hover:bg-gray-100 hover:text-foreground-100",
+            ? "bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)] text-[var(--color-text-inverse)] shadow-[var(--shadow-sm)]"
+            : "text-[var(--color-text-muted)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text-primary)]",
         )}
         aria-label="Grid view"
         aria-pressed={value === "grid"}
@@ -78,10 +79,11 @@ export function ViewToggle({ value, onChange }: ViewToggleProps) {
         type="button"
         onClick={() => onChange("list")}
         className={cn(
-          "flex h-8 w-8 items-center justify-center rounded transition-colors",
+          "flex h-9 w-9 items-center justify-center rounded-lg",
+          "transition-all duration-200",
           value === "list"
-            ? "bg-foreground-200 text-white"
-            : "text-gray-500 hover:bg-gray-100 hover:text-foreground-100",
+            ? "bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)] text-[var(--color-text-inverse)] shadow-[var(--shadow-sm)]"
+            : "text-[var(--color-text-muted)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text-primary)]",
         )}
         aria-label="List view"
         aria-pressed={value === "list"}

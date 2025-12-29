@@ -7,7 +7,10 @@ type SkeletonProps = {
 function Skeleton({ className }: SkeletonProps) {
   return (
     <div
-      className={cn("animate-pulse rounded bg-gray-200", className)}
+      className={cn(
+        "animate-shimmer rounded-lg bg-[var(--color-bg-tertiary)]",
+        className,
+      )}
       aria-hidden="true"
     />
   );
@@ -15,30 +18,42 @@ function Skeleton({ className }: SkeletonProps) {
 
 export function CarCardSkeleton() {
   return (
-    <div className="flex flex-col rounded-xl bg-white p-4 shadow-md">
+    <div
+      className={cn(
+        "flex flex-col rounded-[20px] bg-[var(--color-surface)] p-6",
+        "border border-[var(--color-border)] shadow-[var(--shadow-sm)]",
+      )}
+    >
       {/* Badges area */}
-      <div className="mb-3 flex gap-2">
-        <Skeleton className="h-5 w-16 rounded-full" />
+      <div className="mb-4 flex gap-2">
+        <Skeleton className="h-6 w-16 rounded-full" />
+        <Skeleton className="h-6 w-24 rounded-full" />
       </div>
+
+      {/* Year */}
+      <Skeleton className="mb-2 h-3 w-12" />
 
       {/* Title */}
-      <Skeleton className="mb-2 h-6 w-3/4" />
+      <Skeleton className="mb-1 h-6 w-3/4" />
 
       {/* Price */}
-      <Skeleton className="mb-4 h-8 w-1/2" />
+      <Skeleton className="mt-3 mb-5 h-9 w-1/2" />
 
-      {/* Specs */}
-      <div className="mb-4 flex gap-3">
-        <Skeleton className="h-4 w-16" />
-        <Skeleton className="h-4 w-12" />
-        <Skeleton className="h-4 w-14" />
-        <Skeleton className="h-4 w-16" />
+      {/* Specs Grid */}
+      <div className="mb-5 grid grid-cols-2 gap-3">
+        <Skeleton className="h-5 w-20" />
+        <Skeleton className="h-5 w-16" />
+        <Skeleton className="h-5 w-18" />
+        <Skeleton className="h-5 w-20" />
       </div>
 
+      {/* Divider */}
+      <div className="mb-4 h-px bg-[var(--color-border)]" />
+
       {/* Footer */}
-      <div className="mt-auto flex items-center justify-between border-gray-100 border-t pt-3">
-        <Skeleton className="h-4 w-12" />
+      <div className="flex items-center justify-between">
         <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-9 w-20 rounded-full" />
       </div>
     </div>
   );
@@ -46,32 +61,38 @@ export function CarCardSkeleton() {
 
 export function CarCardListSkeleton() {
   return (
-    <div className="flex gap-4 rounded-xl bg-white p-4 shadow-md">
+    <div
+      className={cn(
+        "flex gap-6 rounded-[20px] bg-[var(--color-surface)] p-6",
+        "border border-[var(--color-border)] shadow-[var(--shadow-sm)]",
+      )}
+    >
       {/* Left section */}
       <div className="flex flex-1 flex-col">
         {/* Badges */}
-        <div className="mb-2 flex gap-2">
-          <Skeleton className="h-5 w-16 rounded-full" />
+        <div className="mb-3 flex gap-2">
+          <Skeleton className="h-6 w-16 rounded-full" />
+          <Skeleton className="h-6 w-24 rounded-full" />
         </div>
 
         {/* Title */}
         <Skeleton className="mb-2 h-6 w-2/3" />
 
         {/* Specs */}
-        <div className="flex gap-3">
-          <Skeleton className="h-4 w-20" />
-          <Skeleton className="h-4 w-16" />
-          <Skeleton className="h-4 w-14" />
-          <Skeleton className="h-4 w-18" />
+        <div className="mt-2 flex gap-4">
+          <Skeleton className="h-5 w-20" />
+          <Skeleton className="h-5 w-16" />
+          <Skeleton className="h-5 w-14" />
+          <Skeleton className="h-5 w-18" />
         </div>
       </div>
 
       {/* Right section */}
       <div className="flex flex-col items-end justify-between">
-        <Skeleton className="h-8 w-24" />
-        <div className="flex items-center gap-3">
-          <Skeleton className="h-4 w-12" />
-          <Skeleton className="h-8 w-8 rounded-full" />
+        <Skeleton className="h-9 w-28" />
+        <div className="flex items-center gap-4">
+          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-10 w-10 rounded-full" />
         </div>
       </div>
     </div>
@@ -80,7 +101,7 @@ export function CarCardListSkeleton() {
 
 export function SkeletonGrid({ count = 8 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {Array.from({ length: count }).map((_, i) => (
         // biome-ignore lint/suspicious/noArrayIndexKey: skeletons are stateless placeholders
         <CarCardSkeleton key={`skeleton-${i}`} />

@@ -55,6 +55,43 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
+function SearchIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </svg>
+  );
+}
+
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
 export function SearchableSelect({
   options,
   value,
@@ -125,8 +162,8 @@ export function SearchableSelect({
   };
 
   return (
-    <div className="space-y-1.5">
-      <span className="block font-medium text-foreground-100 text-sm">
+    <div className="space-y-2">
+      <span className="block font-medium text-[var(--color-text-primary)] text-sm">
         {label}
       </span>
 
@@ -136,37 +173,42 @@ export function SearchableSelect({
           onClick={() => !disabled && setIsOpen(!isOpen)}
           disabled={disabled}
           className={cn(
-            "flex w-full items-center justify-between rounded-md border px-3 py-2",
-            "text-left text-sm transition-colors",
+            "flex w-full items-center justify-between rounded-xl border px-4 py-3",
+            "text-left text-sm transition-all duration-200",
             disabled
-              ? "cursor-not-allowed border-gray-200 bg-gray-50 text-gray-400"
-              : "border-gray-200 bg-white hover:border-gray-300",
-            isOpen && "border-foreground-200 ring-1 ring-foreground-200",
+              ? "cursor-not-allowed border-[var(--color-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-text-muted)]"
+              : "border-[var(--color-border)] bg-[var(--color-bg-secondary)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-surface)]",
+            isOpen &&
+              "border-[var(--color-accent-primary)] bg-[var(--color-surface)] ring-2 ring-[var(--color-accent-primary)]/20",
           )}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
         >
           <span
-            className={selectedOption ? "text-foreground-100" : "text-gray-400"}
+            className={
+              selectedOption
+                ? "text-[var(--color-text-primary)]"
+                : "text-[var(--color-text-muted)]"
+            }
           >
             {disabled && disabledMessage
               ? disabledMessage
               : selectedOption?.label || placeholder}
           </span>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             {value !== null && !disabled && (
               <button
                 type="button"
                 onClick={handleClear}
-                className="rounded p-0.5 hover:bg-gray-100"
+                className="rounded-full p-1 transition-colors hover:bg-[var(--color-bg-tertiary)]"
                 aria-label="Clear selection"
               >
-                <XIcon className="h-3.5 w-3.5 text-gray-400" />
+                <XIcon className="h-3.5 w-3.5 text-[var(--color-text-muted)]" />
               </button>
             )}
             <ChevronDownIcon
               className={cn(
-                "h-4 w-4 text-gray-400 transition-transform",
+                "h-4 w-4 text-[var(--color-text-muted)] transition-transform duration-200",
                 isOpen && "rotate-180",
               )}
             />
@@ -176,30 +218,42 @@ export function SearchableSelect({
         {isOpen && (
           <div
             className={cn(
-              "absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg",
+              "absolute z-50 mt-2 w-full",
+              "rounded-xl border border-[var(--color-border)]",
+              "bg-[var(--color-surface)] shadow-[var(--shadow-lg)]",
+              "origin-top animate-scale-in",
             )}
           >
             {/* Search Input */}
-            <div className="border-gray-200 border-b p-2">
-              <input
-                ref={inputRef}
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Search..."
-                className={cn(
-                  "w-full rounded border border-gray-200 px-2 py-1.5 text-sm",
-                  "focus:border-foreground-200 focus:outline-none focus:ring-1 focus:ring-foreground-200",
-                )}
-              />
+            <div className="border-[var(--color-divider)] border-b p-3">
+              <div className="relative">
+                <SearchIcon className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 text-[var(--color-text-muted)]" />
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Search..."
+                  className={cn(
+                    "w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)]",
+                    "py-2.5 pr-3 pl-10 text-[var(--color-text-primary)] text-sm",
+                    "placeholder:text-[var(--color-text-muted)]",
+                    "transition-all duration-200",
+                    "focus:border-[var(--color-accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-primary)]/20",
+                    "focus:bg-[var(--color-surface)]",
+                  )}
+                />
+              </div>
             </div>
 
             {/* Options List */}
-            <div className="max-h-48 overflow-y-auto p-1">
+            <div className="max-h-56 overflow-y-auto p-2">
               {filteredOptions.length === 0 ? (
-                <div className="px-3 py-2 text-center text-gray-500 text-sm">
-                  No options found
+                <div className="px-4 py-8 text-center">
+                  <p className="text-[var(--color-text-muted)] text-sm">
+                    No options found
+                  </p>
                 </div>
               ) : (
                 filteredOptions.map((option) => (
@@ -208,13 +262,21 @@ export function SearchableSelect({
                     type="button"
                     onClick={() => handleSelect(option.value)}
                     className={cn(
-                      "w-full cursor-pointer rounded px-3 py-2 text-left text-sm transition-colors",
+                      "flex w-full cursor-pointer items-center justify-between rounded-lg px-4 py-3 text-left text-sm",
+                      "transition-all duration-150",
                       option.value === value
-                        ? "bg-foreground-200/10 text-foreground-200"
-                        : "text-foreground-100 hover:bg-gray-100",
+                        ? "bg-[var(--color-accent-tertiary)] text-[var(--color-accent-secondary)]"
+                        : "text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]",
                     )}
                   >
-                    {option.label}
+                    <span
+                      className={option.value === value ? "font-medium" : ""}
+                    >
+                      {option.label}
+                    </span>
+                    {option.value === value && (
+                      <CheckIcon className="h-4 w-4 text-[var(--color-accent-secondary)]" />
+                    )}
                   </button>
                 ))
               )}

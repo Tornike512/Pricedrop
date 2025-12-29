@@ -54,14 +54,12 @@ function getPageNumbers(currentPage: number, totalPages: number): PageItem[] {
     return pages;
   }
 
-  // Always show first page
   pages.push({ type: "page", value: 1 });
 
   if (currentPage > 3) {
     pages.push({ type: "ellipsis", key: "ellipsis-start" });
   }
 
-  // Show pages around current
   const start = Math.max(2, currentPage - 1);
   const end = Math.min(totalPages - 1, currentPage + 1);
 
@@ -73,7 +71,6 @@ function getPageNumbers(currentPage: number, totalPages: number): PageItem[] {
     pages.push({ type: "ellipsis", key: "ellipsis-end" });
   }
 
-  // Always show last page
   if (totalPages > 1) {
     pages.push({ type: "page", value: totalPages });
   }
@@ -98,7 +95,12 @@ export function Pagination({
 
   return (
     <nav
-      className="flex items-center justify-center gap-1"
+      className={cn(
+        "inline-flex items-center gap-1",
+        "rounded-2xl bg-[var(--color-surface)] p-2",
+        "border border-[var(--color-border)]",
+        "shadow-[var(--shadow-sm)]",
+      )}
       aria-label="Pagination"
     >
       {/* Previous Button */}
@@ -107,10 +109,11 @@ export function Pagination({
         onClick={() => canGoPrev && onPageChange(currentPage - 1)}
         disabled={!canGoPrev}
         className={cn(
-          "flex h-10 w-10 items-center justify-center rounded-md transition-colors",
+          "flex h-10 w-10 items-center justify-center rounded-xl",
+          "transition-all duration-200",
           canGoPrev
-            ? "text-foreground-100 hover:bg-gray-100"
-            : "cursor-not-allowed text-gray-300",
+            ? "text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)] active:scale-95"
+            : "cursor-not-allowed text-[var(--color-text-muted)] opacity-40",
         )}
         aria-label="Go to previous page"
       >
@@ -118,13 +121,13 @@ export function Pagination({
       </button>
 
       {/* Page Numbers */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 px-1">
         {pageNumbers.map((item) => {
           if (item.type === "ellipsis") {
             return (
               <span
                 key={item.key}
-                className="flex h-10 w-10 items-center justify-center text-gray-400"
+                className="flex h-10 w-10 items-center justify-center text-[var(--color-text-muted)]"
                 aria-hidden="true"
               >
                 ...
@@ -140,10 +143,11 @@ export function Pagination({
               type="button"
               onClick={() => onPageChange(item.value)}
               className={cn(
-                "flex h-10 w-10 items-center justify-center rounded-md font-medium text-sm transition-colors",
+                "flex h-10 w-10 items-center justify-center rounded-xl",
+                "font-medium text-sm transition-all duration-200",
                 isActive
-                  ? "bg-foreground-200 text-white"
-                  : "text-foreground-100 hover:bg-gray-100",
+                  ? "bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)] text-[var(--color-text-inverse)] shadow-[var(--shadow-sm)]"
+                  : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text-primary)]",
               )}
               aria-label={`Go to page ${item.value}`}
               aria-current={isActive ? "page" : undefined}
@@ -160,10 +164,11 @@ export function Pagination({
         onClick={() => canGoNext && onPageChange(currentPage + 1)}
         disabled={!canGoNext}
         className={cn(
-          "flex h-10 w-10 items-center justify-center rounded-md transition-colors",
+          "flex h-10 w-10 items-center justify-center rounded-xl",
+          "transition-all duration-200",
           canGoNext
-            ? "text-foreground-100 hover:bg-gray-100"
-            : "cursor-not-allowed text-gray-300",
+            ? "text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)] active:scale-95"
+            : "cursor-not-allowed text-[var(--color-text-muted)] opacity-40",
         )}
         aria-label="Go to next page"
       >

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import { AppProviders } from "@/providers";
-import { cn } from "@/utils/cn";
 
 export const metadata: Metadata = {
-  title: "Nextjs starter",
-  description: "A Next.js starter template",
+  title: "Pricedrop | Find Your Perfect Car Deal",
+  description:
+    "Discover exceptional car deals with AI-powered price predictions. Find vehicles priced below market value.",
 };
 
 export default async function RootLayout({
@@ -14,14 +14,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("h-full")}>
-      <body
-        className={cn(
-          "h-full bg-background-100 font-roboto text-foreground-100",
-        )}
-      >
+    <html lang="en" className="h-full">
+      <body className="min-h-full antialiased">
         <AppProviders>
-          <main className="grid h-full">{children}</main>
+          <main className="min-h-full">{children}</main>
         </AppProviders>
       </body>
     </html>

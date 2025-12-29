@@ -11,20 +11,28 @@ import {
   type FilterState,
 } from "./types";
 
-function FilterIcon({ className }: { className?: string }) {
+function SlidersIcon({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
       aria-hidden="true"
     >
-      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+      <line x1="4" x2="4" y1="21" y2="14" />
+      <line x1="4" x2="4" y1="10" y2="3" />
+      <line x1="12" x2="12" y1="21" y2="12" />
+      <line x1="12" x2="12" y1="8" y2="3" />
+      <line x1="20" x2="20" y1="21" y2="16" />
+      <line x1="20" x2="20" y1="12" y2="3" />
+      <line x1="2" x2="6" y1="14" y2="14" />
+      <line x1="10" x2="14" y1="8" y2="8" />
+      <line x1="18" x2="22" y1="16" y2="16" />
     </svg>
   );
 }
@@ -70,8 +78,8 @@ function CheckboxGroup({
   };
 
   return (
-    <fieldset className="space-y-2">
-      <legend className="font-medium text-foreground-100 text-sm">
+    <fieldset className="space-y-3">
+      <legend className="font-medium text-[var(--color-text-primary)] text-sm">
         {label}
       </legend>
       <div className="flex flex-wrap gap-2">
@@ -79,10 +87,12 @@ function CheckboxGroup({
           <label
             key={option.id}
             className={cn(
-              "flex cursor-pointer items-center gap-2 rounded-md border px-3 py-1.5 text-sm transition-colors",
+              "flex cursor-pointer items-center gap-2",
+              "rounded-full border px-4 py-2 text-sm",
+              "transition-all duration-200",
               selected.includes(option.id)
-                ? "border-foreground-200 bg-foreground-200/10 text-foreground-200"
-                : "border-gray-200 text-foreground-100 hover:border-gray-300",
+                ? "border-[var(--color-accent-primary)] bg-[var(--color-accent-tertiary)] font-medium text-[var(--color-accent-secondary)]"
+                : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-bg-secondary)]",
             )}
           >
             <input
@@ -126,11 +136,11 @@ function YearSelect({
   }, [min, max]);
 
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-2">
       {label && (
         <label
           htmlFor={id}
-          className="block font-medium text-foreground-100 text-sm"
+          className="block font-medium text-[var(--color-text-primary)] text-sm"
         >
           {label}
         </label>
@@ -143,10 +153,21 @@ function YearSelect({
         }
         aria-label={!label ? placeholder : undefined}
         className={cn(
-          "w-full rounded-md border border-gray-200 px-3 py-2 text-sm",
-          "focus:border-foreground-200 focus:outline-none focus:ring-1 focus:ring-foreground-200",
-          !value && "text-gray-400",
+          "w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]",
+          "appearance-none px-4 py-3 text-sm",
+          "transition-all duration-200",
+          "focus:border-[var(--color-accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-primary)]/20",
+          "focus:bg-[var(--color-surface)]",
+          !value
+            ? "text-[var(--color-text-muted)]"
+            : "text-[var(--color-text-primary)]",
         )}
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238A8A8A'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "right 12px center",
+          backgroundSize: "16px",
+        }}
       >
         <option value="">{placeholder}</option>
         {years.map((year) => (
@@ -175,7 +196,6 @@ export function FilterPanel({
   const [isOpen, setIsOpen] = useState(false);
   const [localFilters, setLocalFilters] = useState<FilterState>(filters);
 
-  // Sync local filters when external filters change
   useEffect(() => {
     setLocalFilters(filters);
   }, [filters]);
@@ -184,7 +204,6 @@ export function FilterPanel({
     <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
       const updated = { ...localFilters, [key]: value };
 
-      // Clear model when manufacturer changes
       if (key === "manufacturerId") {
         updated.modelId = null;
       }
@@ -231,6 +250,25 @@ export function FilterPanel({
     );
   }, [localFilters]);
 
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (localFilters.priceMin !== null || localFilters.priceMax !== null)
+      count++;
+    if (localFilters.manufacturerId !== null) count++;
+    if (localFilters.modelId !== null) count++;
+    if (localFilters.yearMin !== null || localFilters.yearMax !== null) count++;
+    if (localFilters.mileageMax !== null) count++;
+    if (
+      localFilters.engineVolumeMin !== null ||
+      localFilters.engineVolumeMax !== null
+    )
+      count++;
+    if (localFilters.fuelTypeIds.length > 0) count++;
+    if (localFilters.gearTypeIds.length > 0) count++;
+    if (localFilters.dealsOnly) count++;
+    return count;
+  }, [localFilters]);
+
   const formatPrice = (value: number) =>
     new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -246,33 +284,49 @@ export function FilterPanel({
   const panelContent = (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between border-gray-200 border-b p-4">
-        <div className="flex items-center gap-2">
-          <FilterIcon className="h-5 w-5 text-foreground-100" />
-          <h2 className="font-semibold text-foreground-100 text-lg">Filters</h2>
-          {hasActiveFilters && (
-            <span className="rounded-full bg-foreground-200 px-2 py-0.5 font-medium text-white text-xs">
-              Active
-            </span>
-          )}
+      <div className="flex items-center justify-between border-[var(--color-divider)] border-b p-6">
+        <div className="flex items-center gap-3">
+          <div className="rounded-xl bg-gradient-to-br from-[var(--color-accent-tertiary)] to-[var(--color-bg-secondary)] p-2">
+            <SlidersIcon className="h-5 w-5 text-[var(--color-accent-secondary)]" />
+          </div>
+          <div>
+            <h2 className="font-display font-semibold text-[var(--color-text-primary)] text-xl">
+              Filters
+            </h2>
+            {hasActiveFilters && (
+              <p className="text-[var(--color-accent-secondary)] text-xs">
+                {activeFilterCount} active
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Mobile close button */}
         <button
           type="button"
           onClick={() => setIsOpen(false)}
-          className="rounded-md p-1 hover:bg-gray-100 lg:hidden"
+          className="rounded-full p-2 transition-colors hover:bg-[var(--color-bg-secondary)] lg:hidden"
           aria-label="Close filters"
         >
-          <XIcon className="h-5 w-5 text-gray-500" />
+          <XIcon className="h-5 w-5 text-[var(--color-text-muted)]" />
         </button>
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 space-y-6 overflow-y-auto p-4">
+      <div className="flex-1 space-y-8 overflow-y-auto p-6">
+        {/* Deals Only Toggle - Featured */}
+        <div className="rounded-2xl border border-[var(--color-success)]/10 bg-gradient-to-r from-[var(--color-success-soft)] to-[var(--color-bg-secondary)] p-4">
+          <Toggle
+            label="Show Deals Only"
+            description="Cars priced below predicted market value"
+            checked={localFilters.dealsOnly}
+            onChange={(v) => updateFilter("dealsOnly", v)}
+          />
+        </div>
+
         {/* Price Range */}
         <RangeSlider
-          label="Price (USD)"
+          label="Price Range"
           min={priceRange.min}
           max={priceRange.max}
           step={1000}
@@ -287,6 +341,9 @@ export function FilterPanel({
             return Number.isNaN(num) ? null : num;
           }}
         />
+
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
 
         {/* Manufacturer */}
         <SearchableSelect
@@ -314,12 +371,15 @@ export function FilterPanel({
           disabledMessage="Select manufacturer first"
         />
 
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
+
         {/* Year Range */}
-        <div className="space-y-1.5">
-          <span className="block font-medium text-foreground-100 text-sm">
+        <div className="space-y-3">
+          <span className="block font-medium text-[var(--color-text-primary)] text-sm">
             Year Range
           </span>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <YearSelect
               label=""
               value={localFilters.yearMin}
@@ -340,28 +400,40 @@ export function FilterPanel({
         </div>
 
         {/* Mileage */}
-        <div className="space-y-3">
-          <label className="block font-medium text-foreground-100 text-sm">
-            <span className="mb-3 block">Max Mileage</span>
-            <input
-              type="range"
-              min={mileageRange.min}
-              max={mileageRange.max}
-              step={5000}
-              value={localFilters.mileageMax ?? mileageRange.max}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                updateFilter(
-                  "mileageMax",
-                  val === mileageRange.max ? null : val,
-                );
-              }}
-              className="w-full accent-foreground-200"
-            />
+        <div className="space-y-4">
+          <label
+            htmlFor="mileage-range"
+            className="block font-medium text-[var(--color-text-primary)] text-sm"
+          >
+            Max Mileage
           </label>
-          <div className="flex justify-between text-gray-600 text-sm">
+          <input
+            id="mileage-range"
+            type="range"
+            min={mileageRange.min}
+            max={mileageRange.max}
+            step={5000}
+            value={localFilters.mileageMax ?? mileageRange.max}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              updateFilter("mileageMax", val === mileageRange.max ? null : val);
+            }}
+            className="h-2 w-full cursor-pointer appearance-none rounded-full bg-[var(--color-bg-tertiary)]"
+            style={{
+              background: `linear-gradient(to right, var(--color-accent-primary) 0%, var(--color-accent-primary) ${
+                ((localFilters.mileageMax ?? mileageRange.max) /
+                  mileageRange.max) *
+                100
+              }%, var(--color-bg-tertiary) ${
+                ((localFilters.mileageMax ?? mileageRange.max) /
+                  mileageRange.max) *
+                100
+              }%, var(--color-bg-tertiary) 100%)`,
+            }}
+          />
+          <div className="flex justify-between text-[var(--color-text-muted)] text-xs">
             <span>{formatMileage(mileageRange.min)}</span>
-            <span className="font-medium text-foreground-100">
+            <span className="font-medium text-[var(--color-text-primary)] text-sm">
               {localFilters.mileageMax
                 ? formatMileage(localFilters.mileageMax)
                 : "Any"}
@@ -389,6 +461,9 @@ export function FilterPanel({
           showInputs={false}
         />
 
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
+
         {/* Fuel Type */}
         <CheckboxGroup
           label="Fuel Type"
@@ -404,28 +479,21 @@ export function FilterPanel({
           selected={localFilters.gearTypeIds}
           onChange={(ids) => updateFilter("gearTypeIds", ids)}
         />
-
-        {/* Deals Only Toggle */}
-        <Toggle
-          label="Deals Only"
-          description="Show cars priced below market value"
-          checked={localFilters.dealsOnly}
-          onChange={(v) => updateFilter("dealsOnly", v)}
-        />
       </div>
 
       {/* Footer */}
-      <div className="border-gray-200 border-t p-4">
+      <div className="border-[var(--color-divider)] border-t p-6">
         <div className="flex gap-3">
           <button
             type="button"
             onClick={handleClearAll}
             disabled={!hasActiveFilters}
             className={cn(
-              "flex-1 rounded-md border border-gray-200 px-4 py-2 font-medium text-sm transition-colors",
+              "flex-1 rounded-xl border border-[var(--color-border)] px-4 py-3 font-medium text-sm",
+              "transition-all duration-200",
               hasActiveFilters
-                ? "text-foreground-100 hover:bg-gray-50"
-                : "cursor-not-allowed text-gray-300",
+                ? "text-[var(--color-text-primary)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-bg-secondary)]"
+                : "cursor-not-allowed text-[var(--color-text-muted)] opacity-50",
             )}
           >
             Clear All
@@ -434,7 +502,14 @@ export function FilterPanel({
             <button
               type="button"
               onClick={handleApply}
-              className="flex-1 rounded-md bg-foreground-200 px-4 py-2 font-medium text-sm text-white transition-colors hover:bg-foreground-200/90"
+              className={cn(
+                "flex-1 rounded-xl px-4 py-3 font-medium text-sm",
+                "bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)]",
+                "text-[var(--color-text-inverse)]",
+                "transition-all duration-200",
+                "hover:scale-[1.02] hover:shadow-[var(--shadow-md)]",
+                "active:scale-[0.98]",
+              )}
             >
               Apply Filters
             </button>
@@ -451,16 +526,20 @@ export function FilterPanel({
         type="button"
         onClick={() => setIsOpen(true)}
         className={cn(
-          "fixed bottom-4 left-4 z-40 flex items-center gap-2 rounded-full px-4 py-3 shadow-lg lg:hidden",
-          "bg-foreground-200 text-white transition-transform hover:scale-105",
+          "fixed bottom-6 left-6 z-40 flex items-center gap-3 rounded-full px-5 py-4 lg:hidden",
+          "bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)]",
+          "text-[var(--color-text-inverse)] shadow-[var(--shadow-lg)]",
+          "transition-all duration-300",
+          "hover:scale-105 hover:shadow-[var(--shadow-xl)]",
+          "active:scale-95",
         )}
         aria-label="Open filters"
       >
-        <FilterIcon className="h-5 w-5" />
+        <SlidersIcon className="h-5 w-5" />
         <span className="font-medium text-sm">Filters</span>
         {hasActiveFilters && (
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white font-semibold text-foreground-200 text-xs">
-            !
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-surface)] font-semibold text-[var(--color-accent-secondary)] text-xs">
+            {activeFilterCount}
           </span>
         )}
       </button>
@@ -468,7 +547,7 @@ export function FilterPanel({
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 animate-fade-in bg-[var(--color-text-primary)]/40 backdrop-blur-sm lg:hidden"
           onClick={() => setIsOpen(false)}
           onKeyDown={(e) => e.key === "Escape" && setIsOpen(false)}
           aria-hidden="true"
@@ -478,7 +557,9 @@ export function FilterPanel({
       {/* Mobile Slide-in Panel */}
       <aside
         className={cn(
-          "fixed top-0 left-0 z-50 h-full w-80 max-w-[85vw] bg-white shadow-xl transition-transform duration-300 lg:hidden",
+          "fixed top-0 left-0 z-50 h-full w-80 max-w-[85vw]",
+          "bg-[var(--color-surface)] shadow-[var(--shadow-xl)]",
+          "transition-transform duration-300 ease-out lg:hidden",
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -486,7 +567,14 @@ export function FilterPanel({
       </aside>
 
       {/* Desktop Sticky Sidebar */}
-      <aside className="sticky top-4 hidden h-fit max-h-[calc(100vh-2rem)] w-72 overflow-hidden rounded-xl bg-white shadow-md lg:block">
+      <aside
+        className={cn(
+          "sticky top-6 hidden h-fit max-h-[calc(100vh-3rem)] w-80 overflow-hidden",
+          "rounded-2xl bg-[var(--color-surface)] shadow-[var(--shadow-md)]",
+          "border border-[var(--color-border)]",
+          "lg:block",
+        )}
+      >
         {panelContent}
       </aside>
     </>
