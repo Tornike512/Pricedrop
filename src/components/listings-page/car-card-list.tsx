@@ -15,7 +15,13 @@ type CarCardListProps = {
 type DealScore = "great" | "good" | "fair";
 
 function getDealScore(car: Car): DealScore | null {
-  if (!car.has_predicted_price) return null;
+  if (
+    !car.has_predicted_price ||
+    car.predicted_price == null ||
+    car.pred_min_price == null
+  ) {
+    return null;
+  }
   if (car.price_usd < car.pred_min_price) return "great";
   if (car.price_usd <= car.predicted_price) return "good";
   return "fair";

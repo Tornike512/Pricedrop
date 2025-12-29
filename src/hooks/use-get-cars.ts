@@ -15,15 +15,17 @@ export type Car = {
   car_desc: string;
   order_date: string;
   views: number;
-  predicted_price: number;
+  predicted_price: number | null;
   has_predicted_price: boolean;
-  pred_min_price: number;
-  pred_max_price: number;
-  manufacturer_name: string;
-  model_name: string;
+  pred_min_price: number | null;
+  pred_max_price: number | null;
+  photo: string;
+  manufacturer_name: string | null;
+  model_name: string | null;
   created_at: string;
   updated_at: string;
   link: string;
+  image_url: string;
 };
 
 export type CarsResponse = {

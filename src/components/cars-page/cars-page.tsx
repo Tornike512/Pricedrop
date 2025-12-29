@@ -183,7 +183,10 @@ export function CarsPage() {
     // Filter deals only
     if (filters.dealsOnly) {
       cars = cars.filter(
-        (car) => car.has_predicted_price && car.price_usd < car.predicted_price,
+        (car) =>
+          car.has_predicted_price &&
+          car.predicted_price != null &&
+          car.price_usd < car.predicted_price,
       );
     }
 
@@ -208,10 +211,12 @@ export function CarsPage() {
         return cars.sort((a, b) => a.car_run_km - b.car_run_km);
       case "best_deals":
         return cars
-          .filter((car) => car.has_predicted_price)
+          .filter(
+            (car) => car.has_predicted_price && car.predicted_price != null,
+          )
           .sort((a, b) => {
-            const ratioA = a.price_usd / a.predicted_price;
-            const ratioB = b.price_usd / b.predicted_price;
+            const ratioA = a.price_usd / (a.predicted_price ?? 1);
+            const ratioB = b.price_usd / (b.predicted_price ?? 1);
             return ratioA - ratioB;
           });
       default:

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import type { Car } from "@/hooks/use-get-cars";
 import { cn } from "@/utils/cn";
@@ -20,7 +21,13 @@ export interface CarCardProps extends React.HTMLAttributes<HTMLDivElement> {
 type DealScore = "great" | "good" | "fair";
 
 function getDealScore(car: Car): DealScore | null {
-  if (!car.has_predicted_price) return null;
+  if (
+    !car.has_predicted_price ||
+    car.predicted_price == null ||
+    car.pred_min_price == null
+  ) {
+    return null;
+  }
 
   if (car.price_usd < car.pred_min_price) return "great";
   if (car.price_usd <= car.predicted_price) return "good";
@@ -243,6 +250,25 @@ function EngineIcon({ className }: { className?: string }) {
   );
 }
 
+function CarSilhouette({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 120 60"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+    >
+      <path
+        d="M10 45c0-1.1.9-2 2-2h8c0-4.4 3.6-8 8-8h4l8-12c1.3-2 3.5-3 5.8-3h28.4c2.3 0 4.5 1 5.8 3l8 12h4c4.4 0 8 3.6 8 8h8c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2h-6c0 4.4-3.6 8-8 8s-8-3.6-8-8H36c0 4.4-3.6 8-8 8s-8-3.6-8-8h-8c-1.1 0-2-.9-2-2v-4z"
+        opacity="0.15"
+      />
+      <circle cx="28" cy="51" r="6" opacity="0.2" />
+      <circle cx="92" cy="51" r="6" opacity="0.2" />
+    </svg>
+  );
+}
+
 export const CarCard = ({
   car,
   lookup,
@@ -256,7 +282,9 @@ export const CarCard = ({
 
   const dealScore = getDealScore(car);
   const isNewListing = isNew(car.created_at);
-  const title = `${car.prod_year} ${car.manufacturer_name} ${car.model_name}`;
+  const manufacturerName = car.manufacturer_name ?? "Unknown";
+  const modelName = car.model_name ?? "Unknown";
+  const title = `${car.prod_year} ${manufacturerName} ${modelName}`;
   const fuelType = lookup.fuelTypes[car.fuel_type_id] ?? "Unknown";
   const gearType = lookup.gearTypes[car.gear_type_id] ?? "Unknown";
 
@@ -267,6 +295,25 @@ export const CarCard = ({
     setIsFavorite(newValue);
     onFavoriteToggle?.(car.car_id, newValue);
   };
+
+  // Generate a consistent color based on manufacturer name
+  const getGradientColors = (name: string | null | undefined) => {
+    const colors = [
+      ["#c9a87c", "#a88b6a"], // Gold (default)
+      ["#7c9ac9", "#6a8ba8"], // Blue
+      ["#9ac97c", "#8ba86a"], // Green
+      ["#c97c9a", "#a86a8b"], // Rose
+      ["#9a7cc9", "#8b6aa8"], // Purple
+      ["#c9987c", "#a8836a"], // Copper
+    ];
+    if (!name) return colors[0];
+    const index =
+      name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) %
+      colors.length;
+    return colors[index];
+  };
+
+  const [gradientStart, gradientEnd] = getGradientColors(manufacturerName);
 
   return (
     <article
@@ -280,85 +327,107 @@ export const CarCard = ({
         className,
       )}
       style={{ animationDelay: `${animationDelay}ms` }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       {...props}
     >
-      {/* Top Accent Line */}
+      {/* Image */}
       <div
-        className={cn(
-          "absolute top-0 right-0 left-0 h-[3px]",
-          "bg-gradient-to-r from-[var(--color-accent-secondary)] via-[var(--color-accent-primary)] to-[var(--color-accent-secondary)]",
-          "opacity-0 transition-opacity duration-300",
-          "group-hover:opacity-100",
+        className="relative aspect-[16/10] w-full overflow-hidden"
+        style={{
+          background: `linear-gradient(135deg, ${gradientStart}20 0%, ${gradientEnd}30 100%)`,
+        }}
+      >
+        {car.image_url ? (
+          <Image
+            src={car.image_url}
+            alt={title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <>
+            {/* Fallback: Manufacturer Initial */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span
+                className="select-none font-bold font-display text-[120px] leading-none"
+                style={{ color: `${gradientStart}30` }}
+              >
+                {manufacturerName.charAt(0)}
+              </span>
+            </div>
+            {/* Fallback: Car Silhouette */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <CarSilhouette className="h-24 w-full max-w-[180px] text-[var(--color-text-primary)] opacity-20" />
+            </div>
+          </>
         )}
-      />
 
-      {/* Badges Row */}
-      <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
-        {isNewListing && (
-          <span
-            className={cn(
-              "inline-flex items-center gap-1.5",
-              "rounded-full px-3 py-1",
-              "bg-[var(--color-accent-primary)] text-[var(--color-text-inverse)]",
-              "font-medium text-xs uppercase tracking-wide",
-              "shadow-[var(--shadow-sm)]",
-            )}
-          >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
+        {/* Badges Row */}
+        <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
+          {isNewListing && (
+            <span
+              className={cn(
+                "inline-flex items-center gap-1.5",
+                "rounded-full px-3 py-1",
+                "bg-[var(--color-accent-primary)] text-[var(--color-text-inverse)]",
+                "font-medium text-xs uppercase tracking-wide",
+                "shadow-[var(--shadow-sm)]",
+              )}
+            >
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
+              </span>
+              New
             </span>
-            New
-          </span>
-        )}
-        {dealScore && dealScore !== "fair" && (
-          <span
+          )}
+          {dealScore && dealScore !== "fair" && (
+            <span
+              className={cn(
+                "inline-flex items-center gap-1.5",
+                "rounded-full px-3 py-1",
+                "font-medium text-xs tracking-wide",
+                dealScoreConfig[dealScore].className,
+              )}
+            >
+              {dealScore === "great" && <SparklesIcon className="h-3 w-3" />}
+              {dealScoreConfig[dealScore].label}
+            </span>
+          )}
+        </div>
+
+        {/* Favorite Button */}
+        <button
+          type="button"
+          onClick={handleFavoriteClick}
+          className={cn(
+            "absolute top-4 right-4 z-10",
+            "flex h-10 w-10 items-center justify-center",
+            "rounded-full",
+            "glass",
+            "border border-[var(--color-border)]",
+            "transition-all duration-300 ease-out",
+            "hover:scale-110 hover:border-[var(--color-accent-primary)]",
+            "active:scale-95",
+            isFavorite
+              ? "bg-[var(--color-error-soft)] text-[var(--color-error)]"
+              : "text-[var(--color-text-muted)] hover:text-[var(--color-error)]",
+          )}
+          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+          aria-pressed={isFavorite}
+        >
+          <HeartIcon
             className={cn(
-              "inline-flex items-center gap-1.5",
-              "rounded-full px-3 py-1",
-              "font-medium text-xs tracking-wide",
-              dealScoreConfig[dealScore].className,
+              "h-5 w-5 transition-transform duration-300",
+              isFavorite && "scale-110",
             )}
-          >
-            {dealScore === "great" && <SparklesIcon className="h-3 w-3" />}
-            {dealScoreConfig[dealScore].label}
-          </span>
-        )}
+            filled={isFavorite}
+          />
+        </button>
       </div>
 
-      {/* Favorite Button */}
-      <button
-        type="button"
-        onClick={handleFavoriteClick}
-        className={cn(
-          "absolute top-4 right-4 z-10",
-          "flex h-10 w-10 items-center justify-center",
-          "rounded-full",
-          "glass",
-          "border border-[var(--color-border)]",
-          "transition-all duration-300 ease-out",
-          "hover:scale-110 hover:border-[var(--color-accent-primary)]",
-          "active:scale-95",
-          isFavorite
-            ? "bg-[var(--color-error-soft)] text-[var(--color-error)]"
-            : "text-[var(--color-text-muted)] hover:text-[var(--color-error)]",
-        )}
-        aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-        aria-pressed={isFavorite}
-      >
-        <HeartIcon
-          className={cn(
-            "h-5 w-5 transition-transform duration-300",
-            isFavorite && "scale-110",
-          )}
-          filled={isFavorite}
-        />
-      </button>
-
       {/* Content Container */}
-      <div className="flex flex-1 flex-col p-6 pt-16">
+      <div className="flex flex-1 flex-col p-5">
         {/* Year Badge */}
         <span className="mb-2 font-medium text-[var(--color-accent-secondary)] text-xs uppercase tracking-widest">
           {car.prod_year}
@@ -372,7 +441,7 @@ export const CarCard = ({
             "mb-1 line-clamp-2",
           )}
         >
-          {car.manufacturer_name} {car.model_name}
+          {manufacturerName} {modelName}
         </h3>
 
         {/* Price Section */}
@@ -385,16 +454,18 @@ export const CarCard = ({
           >
             {formatPrice(car.price_usd)}
           </p>
-          {car.has_predicted_price && car.price_usd < car.predicted_price && (
-            <p className="mt-1 text-[var(--color-text-muted)] text-sm">
-              <span className="line-through">
-                {formatPrice(car.predicted_price)}
-              </span>
-              <span className="ml-2 font-medium text-[var(--color-success)]">
-                Save {formatPrice(car.predicted_price - car.price_usd)}
-              </span>
-            </p>
-          )}
+          {car.has_predicted_price &&
+            car.predicted_price != null &&
+            car.price_usd < car.predicted_price && (
+              <p className="mt-1 text-[var(--color-text-muted)] text-sm">
+                <span className="line-through">
+                  {formatPrice(car.predicted_price)}
+                </span>
+                <span className="ml-2 font-medium text-[var(--color-success)]">
+                  Save {formatPrice(car.predicted_price - car.price_usd)}
+                </span>
+              </p>
+            )}
         </div>
 
         {/* Specs Grid */}

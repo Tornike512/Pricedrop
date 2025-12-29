@@ -20,40 +20,48 @@ export function CarCardSkeleton() {
   return (
     <div
       className={cn(
-        "flex flex-col rounded-[20px] bg-[var(--color-surface)] p-6",
-        "border border-[var(--color-border)] shadow-[var(--shadow-sm)]",
+        "flex flex-col overflow-hidden rounded-[20px] bg-[var(--color-surface)]",
+        "shadow-[var(--shadow-sm)]",
       )}
     >
-      {/* Badges area */}
-      <div className="mb-4 flex gap-2">
-        <Skeleton className="h-6 w-16 rounded-full" />
-        <Skeleton className="h-6 w-24 rounded-full" />
+      {/* Image Placeholder */}
+      <div className="relative aspect-[16/10] w-full animate-shimmer bg-[var(--color-bg-tertiary)]">
+        {/* Badges */}
+        <div className="absolute top-4 left-4 flex gap-2">
+          <Skeleton className="h-6 w-14 rounded-full" />
+          <Skeleton className="h-6 w-24 rounded-full" />
+        </div>
+        {/* Favorite button */}
+        <Skeleton className="absolute top-4 right-4 h-10 w-10 rounded-full" />
       </div>
 
-      {/* Year */}
-      <Skeleton className="mb-2 h-3 w-12" />
+      {/* Content */}
+      <div className="p-5">
+        {/* Year */}
+        <Skeleton className="mb-2 h-3 w-12" />
 
-      {/* Title */}
-      <Skeleton className="mb-1 h-6 w-3/4" />
+        {/* Title */}
+        <Skeleton className="mb-1 h-6 w-3/4" />
 
-      {/* Price */}
-      <Skeleton className="mt-3 mb-5 h-9 w-1/2" />
+        {/* Price */}
+        <Skeleton className="mt-3 mb-5 h-9 w-1/2" />
 
-      {/* Specs Grid */}
-      <div className="mb-5 grid grid-cols-2 gap-3">
-        <Skeleton className="h-5 w-20" />
-        <Skeleton className="h-5 w-16" />
-        <Skeleton className="h-5 w-18" />
-        <Skeleton className="h-5 w-20" />
-      </div>
+        {/* Specs Grid */}
+        <div className="mb-5 grid grid-cols-2 gap-3">
+          <Skeleton className="h-5 w-20" />
+          <Skeleton className="h-5 w-16" />
+          <Skeleton className="h-5 w-18" />
+          <Skeleton className="h-5 w-20" />
+        </div>
 
-      {/* Divider */}
-      <div className="mb-4 h-px bg-[var(--color-border)]" />
+        {/* Divider */}
+        <div className="mb-4 h-px bg-[var(--color-border)]" />
 
-      {/* Footer */}
-      <div className="flex items-center justify-between">
-        <Skeleton className="h-4 w-20" />
-        <Skeleton className="h-9 w-20 rounded-full" />
+        {/* Footer */}
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-9 w-20 rounded-full" />
+        </div>
       </div>
     </div>
   );
