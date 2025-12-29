@@ -1,3 +1,11 @@
+## 1.1.0 (2025-12-29)
+
+* chore: update version to 1.0.0 in package.json and add changelog entries ([201946e](https://github.com/Tornike512/Pricedrop/commit/201946e))
+* feat: add CarCard component for displaying car details with favorite functionality ([6d93f04](https://github.com/Tornike512/Pricedrop/commit/6d93f04))
+* feat: add listings page components including CarCardList, EmptyState ([11e7f2b](https://github.com/Tornike512/Pricedrop/commit/11e7f2b))
+* feat: implement FilterPanel component with various filter options and UI elements ([9fb1f66](https://github.com/Tornike512/Pricedrop/commit/9fb1f66))
+* feat: implement useGetCars hook for fetching car data with pagination ([8bb9169](https://github.com/Tornike512/Pricedrop/commit/8bb9169))
+
 ## 1.0.0 (2025-12-26)
 
 * fix: standardize color variable casing in CSS ([6fe6f5a](https://github.com/Tornike512/Pricedrop/commit/6fe6f5a))
