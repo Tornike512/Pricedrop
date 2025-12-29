@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npx tsc:*)",
-      "Bash(npx biome:*)"
+      "Bash(npx biome:*)",
+      "Bash(npm run dev)",
+      "Bash(timeout /t 5 /nobreak)"
     ]
   }
 }
