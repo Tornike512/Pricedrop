@@ -1,3 +1,12 @@
+## 1.3.0 (2025-12-29)
+
+* feat: add manufacturer names and improve car data handling in CarCard ([b1c7644](https://github.com/Tornike512/Pricedrop/commit/b1c7644))
+* feat: enhance Listings ([1137686](https://github.com/Tornike512/Pricedrop/commit/1137686))
+* feat: improve car data handling and UI components with enhanced validation ([daeb9ab](https://github.com/Tornike512/Pricedrop/commit/daeb9ab))
+* feat: refactor CarsPage and useGetCars for improved pagination and data handling ([98e164e](https://github.com/Tornike512/Pricedrop/commit/98e164e))
+* feat: update CarCard layout and remove favorite button for improved design ([f7ec334](https://github.com/Tornike512/Pricedrop/commit/f7ec334))
+* feat: update color scheme and enhance UI components for a modern look ([d7ca266](https://github.com/Tornike512/Pricedrop/commit/d7ca266))
+
 ## 1.2.0 (2025-12-29)
 
 * chore: update version to 1.1.0 in package.json and add new entries to CHANGELOG.md ([10a080b](https://github.com/Tornike512/Pricedrop/commit/10a080b))
