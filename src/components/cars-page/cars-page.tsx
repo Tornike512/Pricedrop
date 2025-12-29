@@ -31,9 +31,14 @@ const GEAR_TYPE_LABELS: Record<number, string> = {
   4: "CVT",
 };
 
+const PAGE_SIZE = 16;
+
 export function CarsPage() {
   // Filter state
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
 
   // UI state
   const [sortBy, setSortBy] = useState<SortOption>("newest");
@@ -52,24 +57,23 @@ export function CarsPage() {
       prod_year_to: filters.yearMax,
       price_from: filters.priceMin,
       price_to: filters.priceMax,
-      page_size: 16,
+      page_size: PAGE_SIZE,
+      page: currentPage,
     };
-  }, [filters]);
+  }, [filters, currentPage]);
 
   // Fetch cars data
-  const { data, isLoading, fetchNextPage, hasNextPage } =
-    useGetCars(queryParams);
+  const { data, isLoading } = useGetCars(queryParams);
 
-  // Flatten paginated data
-  const allCars = useMemo(() => {
-    if (!data?.pages) return [];
-    return data.pages.flatMap((page) => page.items);
-  }, [data]);
+  // Get cars from current page
+  const cars = data?.items ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = data?.total_pages ?? 1;
 
   // Derive manufacturers from car data
   const manufacturers = useMemo<Manufacturer[]>(() => {
     const map = new Map<number, string>();
-    for (const car of allCars) {
+    for (const car of cars) {
       if (!map.has(car.man_id) && car.manufacturer_name) {
         map.set(car.man_id, car.manufacturer_name);
       }
@@ -79,12 +83,12 @@ export function CarsPage() {
       .sort((a, b) =>
         (a.manufacturer_name ?? "").localeCompare(b.manufacturer_name ?? ""),
       );
-  }, [allCars]);
+  }, [cars]);
 
   // Derive models from car data
   const models = useMemo<Model[]>(() => {
     const map = new Map<number, { man_id: number; model_name: string }>();
-    for (const car of allCars) {
+    for (const car of cars) {
       if (!map.has(car.model_id) && car.model_name) {
         map.set(car.model_id, {
           man_id: car.man_id,
@@ -99,12 +103,12 @@ export function CarsPage() {
         model_name,
       }))
       .sort((a, b) => (a.model_name ?? "").localeCompare(b.model_name ?? ""));
-  }, [allCars]);
+  }, [cars]);
 
   // Derive fuel types from car data
   const fuelTypes = useMemo<LookupItem[]>(() => {
     const ids = new Set<number>();
-    for (const car of allCars) {
+    for (const car of cars) {
       if (car.fuel_type_id != null) {
         ids.add(car.fuel_type_id);
       }
@@ -115,12 +119,12 @@ export function CarsPage() {
         label: FUEL_TYPE_LABELS[id] ?? `Fuel Type ${id}`,
       }))
       .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
-  }, [allCars]);
+  }, [cars]);
 
   // Derive gear types from car data
   const gearTypes = useMemo<LookupItem[]>(() => {
     const ids = new Set<number>();
-    for (const car of allCars) {
+    for (const car of cars) {
       if (car.gear_type_id != null) {
         ids.add(car.gear_type_id);
       }
@@ -131,7 +135,7 @@ export function CarsPage() {
         label: GEAR_TYPE_LABELS[id] ?? `Gear Type ${id}`,
       }))
       .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
-  }, [allCars]);
+  }, [cars]);
 
   // Build lookup map for CarCard
   const lookupMap = useMemo<LookupMap>(
@@ -145,18 +149,18 @@ export function CarsPage() {
 
   // Apply client-side filtering for multi-select filters and deals only
   const filteredCars = useMemo(() => {
-    let cars = [...allCars];
+    let result = [...cars];
 
     // Filter by multiple fuel types
     if (filters.fuelTypeIds.length > 1) {
-      cars = cars.filter((car) =>
+      result = result.filter((car) =>
         filters.fuelTypeIds.includes(car.fuel_type_id),
       );
     }
 
     // Filter by multiple gear types
     if (filters.gearTypeIds.length > 1) {
-      cars = cars.filter((car) =>
+      result = result.filter((car) =>
         filters.gearTypeIds.includes(car.gear_type_id),
       );
     }
@@ -164,22 +168,22 @@ export function CarsPage() {
     // Filter by mileage
     const maxMileage = filters.mileageMax;
     if (maxMileage !== null) {
-      cars = cars.filter((car) => car.car_run_km <= maxMileage);
+      result = result.filter((car) => car.car_run_km <= maxMileage);
     }
 
     // Filter by engine volume
     const minEngine = filters.engineVolumeMin;
     const maxEngine = filters.engineVolumeMax;
     if (minEngine !== null) {
-      cars = cars.filter((car) => car.engine_volume >= minEngine);
+      result = result.filter((car) => car.engine_volume >= minEngine);
     }
     if (maxEngine !== null) {
-      cars = cars.filter((car) => car.engine_volume <= maxEngine);
+      result = result.filter((car) => car.engine_volume <= maxEngine);
     }
 
     // Filter deals only
     if (filters.dealsOnly) {
-      cars = cars.filter(
+      result = result.filter(
         (car) =>
           car.has_predicted_price &&
           car.predicted_price != null &&
@@ -187,27 +191,27 @@ export function CarsPage() {
       );
     }
 
-    return cars;
-  }, [allCars, filters]);
+    return result;
+  }, [cars, filters]);
 
   // Apply sorting
   const sortedCars = useMemo(() => {
-    const cars = [...filteredCars];
+    const result = [...filteredCars];
 
     switch (sortBy) {
       case "newest":
-        return cars.sort(
+        return result.sort(
           (a, b) =>
             new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
         );
       case "price_asc":
-        return cars.sort((a, b) => a.price_usd - b.price_usd);
+        return result.sort((a, b) => a.price_usd - b.price_usd);
       case "price_desc":
-        return cars.sort((a, b) => b.price_usd - a.price_usd);
+        return result.sort((a, b) => b.price_usd - a.price_usd);
       case "mileage_asc":
-        return cars.sort((a, b) => a.car_run_km - b.car_run_km);
+        return result.sort((a, b) => a.car_run_km - b.car_run_km);
       case "best_deals":
-        return cars
+        return result
           .filter(
             (car) => car.has_predicted_price && car.predicted_price != null,
           )
@@ -217,20 +221,11 @@ export function CarsPage() {
             return ratioA - ratioB;
           });
       default:
-        return cars;
+        return result;
     }
   }, [filteredCars, sortBy]);
 
-  // Pagination state (client-side for now)
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 16;
-  const totalPages = Math.ceil(sortedCars.length / pageSize);
-  const paginatedCars = useMemo(() => {
-    const start = (currentPage - 1) * pageSize;
-    return sortedCars.slice(start, start + pageSize);
-  }, [sortedCars, currentPage]);
-
-  // Reset page when filters or sort change
+  // Reset page when filters change
   const handleFilterChange = useCallback((newFilters: FilterState) => {
     setFilters(newFilters);
     setCurrentPage(1);
@@ -238,7 +233,10 @@ export function CarsPage() {
 
   const handleSortChange = useCallback((sort: SortOption) => {
     setSortBy(sort);
-    setCurrentPage(1);
+  }, []);
+
+  const handlePageChange = useCallback((page: number) => {
+    setCurrentPage(page);
   }, []);
 
   const handleFavoriteToggle = useCallback(
@@ -254,19 +252,6 @@ export function CarsPage() {
       });
     },
     [],
-  );
-
-  // Load more when reaching last pages
-  const handlePageChange = useCallback(
-    (page: number) => {
-      setCurrentPage(page);
-
-      // If we're near the end and have more data, fetch it
-      if (page >= totalPages - 1 && hasNextPage) {
-        fetchNextPage();
-      }
-    },
-    [totalPages, hasNextPage, fetchNextPage],
   );
 
   return (
@@ -315,10 +300,10 @@ export function CarsPage() {
           {/* Listings */}
           <div className="flex-1">
             <ListingsPage
-              items={paginatedCars}
-              total={sortedCars.length}
+              items={sortedCars}
+              total={total}
               page={currentPage}
-              pageSize={pageSize}
+              pageSize={PAGE_SIZE}
               totalPages={totalPages}
               loading={isLoading}
               lookup={lookupMap}

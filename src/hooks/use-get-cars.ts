@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { API_URL } from "@/config";
 
 export type Car = {
@@ -82,18 +82,9 @@ async function getCars(params?: GetCarsParams): Promise<CarsResponse> {
   return response.json() as Promise<CarsResponse>;
 }
 
-export function useGetCars(params?: Omit<GetCarsParams, "page">) {
-  const pageSize = params?.page_size ?? 16;
-
-  return useInfiniteQuery({
+export function useGetCars(params?: GetCarsParams) {
+  return useQuery({
     queryKey: ["cars", params],
-    queryFn: ({ pageParam = 1 }) =>
-      getCars({ ...params, page_size: pageSize, page: pageParam }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      return lastPage.page < lastPage.total_pages
-        ? lastPage.page + 1
-        : undefined;
-    },
+    queryFn: () => getCars(params),
   });
 }
