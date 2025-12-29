@@ -10,11 +10,7 @@ import {
   type Manufacturer,
   type Model,
 } from "@/components/filter-panel";
-import {
-  ListingsPage,
-  type SortOption,
-  type ViewMode,
-} from "@/components/listings-page";
+import { ListingsPage, type SortOption } from "@/components/listings-page";
 import { MANUFACTURER_NAMES } from "@/constants/manufacturers";
 import { useGetCars } from "@/hooks/use-get-cars";
 
@@ -41,7 +37,6 @@ export function CarsPage() {
 
   // UI state
   const [sortBy, setSortBy] = useState<SortOption>("newest");
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
 
   // Build query params from filters
@@ -278,7 +273,7 @@ export function CarsPage() {
     <div className="min-h-screen bg-background-100">
       {/* Header */}
       <header className="border-[var(--color-border)] border-b bg-[var(--color-surface)]/80 backdrop-blur-xl">
-        <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-[1800px] px-4 py-5 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-accent-primary)] to-[var(--color-success)]">
@@ -287,6 +282,7 @@ export function CarsPage() {
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   className="h-5 w-5 text-[var(--color-text-inverse)]"
+                  aria-hidden="true"
                 >
                   <path d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
                 </svg>
@@ -303,7 +299,7 @@ export function CarsPage() {
       </header>
 
       {/* Main Content */}
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-[1800px] px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex gap-6">
           {/* Filter Panel */}
           <FilterPanel
@@ -327,11 +323,9 @@ export function CarsPage() {
               loading={isLoading}
               lookup={lookupMap}
               sortBy={sortBy}
-              viewMode={viewMode}
               favorites={favorites}
               onSortChange={handleSortChange}
               onPageChange={handlePageChange}
-              onViewChange={setViewMode}
               onFavoriteToggle={handleFavoriteToggle}
             />
           </div>

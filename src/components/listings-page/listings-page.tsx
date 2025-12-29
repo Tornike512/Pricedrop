@@ -2,13 +2,11 @@
 
 import { CarCard } from "@/components/car-card";
 import { cn } from "@/utils/cn";
-import { CarCardList } from "./car-card-list";
 import { EmptyState } from "./empty-state";
 import { Pagination } from "./pagination";
-import { SkeletonGrid, SkeletonList } from "./skeleton";
+import { SkeletonGrid } from "./skeleton";
 import { SortSelect } from "./sort-select";
-import type { ListingsPageProps, SortOption, ViewMode } from "./types";
-import { ViewToggle } from "./view-toggle";
+import type { ListingsPageProps, SortOption } from "./types";
 
 function CarIcon({ className }: { className?: string }) {
   return (
@@ -40,19 +38,13 @@ export function ListingsPage({
   loading = false,
   lookup,
   sortBy = "newest",
-  viewMode = "grid",
   favorites = new Set(),
   onSortChange,
   onPageChange,
-  onViewChange,
   onFavoriteToggle,
 }: ListingsPageProps) {
   const handleSortChange = (sort: SortOption) => {
     onSortChange?.(sort);
-  };
-
-  const handleViewChange = (view: ViewMode) => {
-    onViewChange?.(view);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -103,47 +95,28 @@ export function ListingsPage({
         {/* Controls */}
         <div className="flex items-center gap-3">
           <SortSelect value={sortBy} onChange={handleSortChange} />
-          <ViewToggle value={viewMode} onChange={handleViewChange} />
         </div>
       </div>
 
       {/* Content Area */}
       {loading ? (
-        viewMode === "grid" ? (
-          <SkeletonGrid count={pageSize} />
-        ) : (
-          <SkeletonList count={pageSize} />
-        )
+        <SkeletonGrid count={pageSize} />
       ) : items.length === 0 ? (
         <EmptyState />
       ) : (
         <>
-          {viewMode === "grid" ? (
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {items.map((car, index) => (
-                <CarCard
-                  key={car.car_id}
-                  car={car}
-                  lookup={lookup}
-                  isFavorite={favorites.has(car.car_id)}
-                  onFavoriteToggle={handleFavoriteToggle}
-                  animationDelay={index * 50}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              {items.map((car, _index) => (
-                <CarCardList
-                  key={car.car_id}
-                  car={car}
-                  lookup={lookup}
-                  isFavorite={favorites.has(car.car_id)}
-                  onFavoriteToggle={handleFavoriteToggle}
-                />
-              ))}
-            </div>
-          )}
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {items.map((car, index) => (
+              <CarCard
+                key={car.car_id}
+                car={car}
+                lookup={lookup}
+                isFavorite={favorites.has(car.car_id)}
+                onFavoriteToggle={handleFavoriteToggle}
+                animationDelay={index * 50}
+              />
+            ))}
+          </div>
 
           {/* Pagination */}
           {totalPages > 1 && (

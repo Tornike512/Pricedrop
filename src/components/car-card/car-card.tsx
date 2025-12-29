@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import type { Car } from "@/hooks/use-get-cars";
 import { cn } from "@/utils/cn";
 
@@ -142,30 +141,6 @@ function ArrowUpRightIcon({ className }: { className?: string }) {
   );
 }
 
-function HeartIcon({
-  className,
-  filled,
-}: {
-  className?: string;
-  filled?: boolean;
-}) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill={filled ? "currentColor" : "none"}
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-    </svg>
-  );
-}
-
 function GaugeIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -280,8 +255,6 @@ export const CarCard = ({
   className,
   ...props
 }: CarCardProps) => {
-  const [isFavorite, setIsFavorite] = useState(initialFavorite);
-
   const dealScore = getDealScore(car);
   const isNewListing = isNew(car.created_at);
   const manufacturerName =
@@ -291,14 +264,6 @@ export const CarCard = ({
   const title = `${car.prod_year} ${manufacturerName} ${modelName}`;
   const fuelType = lookup.fuelTypes[car.fuel_type_id] ?? "Unknown";
   const gearType = lookup.gearTypes[car.gear_type_id] ?? "Unknown";
-
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const newValue = !isFavorite;
-    setIsFavorite(newValue);
-    onFavoriteToggle?.(car.car_id, newValue);
-  };
 
   // Generate a consistent color based on manufacturer name
   const getGradientColors = (name: string | null | undefined) => {
@@ -335,7 +300,7 @@ export const CarCard = ({
     >
       {/* Image */}
       <div
-        className="relative aspect-[16/10] w-full overflow-hidden"
+        className="relative aspect-square w-full overflow-hidden"
         style={{
           background: `linear-gradient(135deg, ${gradientStart}20 0%, ${gradientEnd}30 100%)`,
         }}
@@ -399,35 +364,6 @@ export const CarCard = ({
             </span>
           )}
         </div>
-
-        {/* Favorite Button */}
-        <button
-          type="button"
-          onClick={handleFavoriteClick}
-          className={cn(
-            "absolute top-4 right-4 z-10",
-            "flex h-10 w-10 items-center justify-center",
-            "rounded-full",
-            "glass",
-            "border border-[var(--color-border)]",
-            "transition-all duration-300 ease-out",
-            "hover:scale-110 hover:border-[var(--color-accent-primary)]",
-            "active:scale-95",
-            isFavorite
-              ? "bg-[var(--color-error-soft)] text-[var(--color-error)]"
-              : "text-[var(--color-text-muted)] hover:text-[var(--color-error)]",
-          )}
-          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-          aria-pressed={isFavorite}
-        >
-          <HeartIcon
-            className={cn(
-              "h-5 w-5 transition-transform duration-300",
-              isFavorite && "scale-110",
-            )}
-            filled={isFavorite}
-          />
-        </button>
       </div>
 
       {/* Content Container */}
