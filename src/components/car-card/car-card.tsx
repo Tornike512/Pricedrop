@@ -303,12 +303,12 @@ export const CarCard = ({
   // Generate a consistent color based on manufacturer name
   const getGradientColors = (name: string | null | undefined) => {
     const colors = [
-      ["#c9a87c", "#a88b6a"], // Gold (default)
-      ["#7c9ac9", "#6a8ba8"], // Blue
-      ["#9ac97c", "#8ba86a"], // Green
-      ["#c97c9a", "#a86a8b"], // Rose
-      ["#9a7cc9", "#8b6aa8"], // Purple
-      ["#c9987c", "#a8836a"], // Copper
+      ["#d4f542", "#a3e635"], // Electric Lime (default)
+      ["#22d3ee", "#06b6d4"], // Cyan
+      ["#f472b6", "#ec4899"], // Pink
+      ["#a78bfa", "#8b5cf6"], // Purple
+      ["#fb923c", "#f97316"], // Orange
+      ["#4ade80", "#22c55e"], // Green
     ];
     if (!name) return colors[0];
     const index =
