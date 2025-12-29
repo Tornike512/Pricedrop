@@ -8,6 +8,8 @@ import { cn } from "@/utils/cn";
 export type LookupMap = {
   fuelTypes: Record<number, string>;
   gearTypes: Record<number, string>;
+  manufacturers?: Record<number, string>;
+  models?: Record<number, string>;
 };
 
 export interface CarCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -282,8 +284,10 @@ export const CarCard = ({
 
   const dealScore = getDealScore(car);
   const isNewListing = isNew(car.created_at);
-  const manufacturerName = car.manufacturer_name ?? "Unknown";
-  const modelName = car.model_name ?? "Unknown";
+  const manufacturerName =
+    car.manufacturer_name ?? lookup.manufacturers?.[car.man_id] ?? "Unknown";
+  const modelName =
+    car.model_name ?? lookup.models?.[car.model_id] ?? "Unknown";
   const title = `${car.prod_year} ${manufacturerName} ${modelName}`;
   const fuelType = lookup.fuelTypes[car.fuel_type_id] ?? "Unknown";
   const gearType = lookup.gearTypes[car.gear_type_id] ?? "Unknown";

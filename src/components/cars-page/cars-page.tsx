@@ -15,6 +15,7 @@ import {
   type SortOption,
   type ViewMode,
 } from "@/components/listings-page";
+import { MANUFACTURER_NAMES } from "@/constants/manufacturers";
 import { useGetCars } from "@/hooks/use-get-cars";
 
 // Default lookup labels for fuel and gear types
@@ -142,6 +143,7 @@ export function CarsPage() {
     () => ({
       fuelTypes: FUEL_TYPE_LABELS,
       gearTypes: GEAR_TYPE_LABELS,
+      manufacturers: MANUFACTURER_NAMES,
     }),
     [],
   );
