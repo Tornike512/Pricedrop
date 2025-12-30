@@ -566,10 +566,10 @@ export function FilterPanel({
         {panelContent}
       </aside>
 
-      {/* Desktop Sticky Sidebar */}
+      {/* Desktop Sidebar */}
       <aside
         className={cn(
-          "sticky top-6 hidden h-fit max-h-[calc(100vh-3rem)] w-80 overflow-hidden",
+          "hidden h-fit w-80 overflow-hidden",
           "rounded-2xl bg-[var(--color-surface)] shadow-[var(--shadow-md)]",
           "border border-[var(--color-border)]",
           "lg:block",
