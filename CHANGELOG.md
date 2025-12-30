@@ -1,3 +1,10 @@
+## 1.6.0 (2025-12-30)
+
+* fix: refactor SearchableSelect component to use button for toggle ([02639eb](https://github.com/Tornike512/Pricedrop/commit/02639eb))
+* fix: remove role attribute from SearchableSelect component ([7c100cf](https://github.com/Tornike512/Pricedrop/commit/7c100cf))
+* Merge branch 'main' of https://github.com/Tornike512/Pricedrop ([dbb1f2b](https://github.com/Tornike512/Pricedrop/commit/dbb1f2b))
+* feat: enhance accessibility of SearchableSelect component with role and keyboard support ([b174240](https://github.com/Tornike512/Pricedrop/commit/b174240))
+
 ## 1.5.0 (2025-12-30)
 
 * fix: ensure manId is safely cast to number in useGetModels hook ([18b96dc](https://github.com/Tornike512/Pricedrop/commit/18b96dc))
