@@ -1,3 +1,12 @@
+## 1.4.0 (2025-12-30)
+
+* feat: add hooks for fetching manufacturers and models data ([614af82](https://github.com/Tornike512/Pricedrop/commit/614af82))
+* feat: enhance RangeSlider and FilterPanel with improved dragging state management ([2b15131](https://github.com/Tornike512/Pricedrop/commit/2b15131))
+* feat: implement SingleSlider component for improved mileage selection ([1252c4b](https://github.com/Tornike512/Pricedrop/commit/1252c4b))
+* feat: replace logo SVG with Image component for improved rendering ([2f5bcb9](https://github.com/Tornike512/Pricedrop/commit/2f5bcb9))
+* feat: update color scheme and UI components for a modern light theme ([6d4a409](https://github.com/Tornike512/Pricedrop/commit/6d4a409))
+* fix: update comment for desktop sidebar in FilterPanel component ([5a457c5](https://github.com/Tornike512/Pricedrop/commit/5a457c5))
+
 ## 1.3.0 (2025-12-29)
 
 * feat: add manufacturer names and improve car data handling in CarCard ([b1c7644](https://github.com/Tornike512/Pricedrop/commit/b1c7644))
