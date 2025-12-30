@@ -169,7 +169,6 @@ export function SearchableSelect({
 
       <div ref={containerRef} className="relative">
         <div
-          role="combobox"
           tabIndex={disabled ? -1 : 0}
           onClick={() => !disabled && setIsOpen(!isOpen)}
           onKeyDown={(e) => {
