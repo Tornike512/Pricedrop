@@ -168,23 +168,19 @@ export function SearchableSelect({
       </span>
 
       <div ref={containerRef} className="relative">
-        <div
-          tabIndex={disabled ? -1 : 0}
+        <button
+          type="button"
           onClick={() => !disabled && setIsOpen(!isOpen)}
-          onKeyDown={(e) => {
-            if (!disabled && (e.key === "Enter" || e.key === " ")) {
-              e.preventDefault();
-              setIsOpen(!isOpen);
-            }
-          }}
+          disabled={disabled}
           className={cn(
-            "flex w-full cursor-pointer items-center justify-between rounded-xl border px-4 py-3",
+            "flex w-full items-center justify-between rounded-xl border px-4 py-3",
             "text-left text-sm transition-all duration-200",
             disabled
               ? "cursor-not-allowed border-[var(--color-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-text-muted)]"
               : "border-[var(--color-border)] bg-[var(--color-bg-secondary)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-surface)]",
             isOpen &&
               "border-[var(--color-accent-primary)] bg-[var(--color-surface)] ring-2 ring-[var(--color-accent-primary)]/20",
+            value !== null && !disabled && "pr-16",
           )}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
@@ -200,25 +196,23 @@ export function SearchableSelect({
               ? disabledMessage
               : selectedOption?.label || placeholder}
           </span>
-          <div className="flex items-center gap-2">
-            {value !== null && !disabled && (
-              <button
-                type="button"
-                onClick={handleClear}
-                className="rounded-full p-1 transition-colors hover:bg-[var(--color-bg-tertiary)]"
-                aria-label="Clear selection"
-              >
-                <XIcon className="h-3.5 w-3.5 text-[var(--color-text-muted)]" />
-              </button>
+          <ChevronDownIcon
+            className={cn(
+              "h-4 w-4 text-[var(--color-text-muted)] transition-transform duration-200",
+              isOpen && "rotate-180",
             )}
-            <ChevronDownIcon
-              className={cn(
-                "h-4 w-4 text-[var(--color-text-muted)] transition-transform duration-200",
-                isOpen && "rotate-180",
-              )}
-            />
-          </div>
-        </div>
+          />
+        </button>
+        {value !== null && !disabled && (
+          <button
+            type="button"
+            onClick={handleClear}
+            className="-translate-y-1/2 absolute top-1/2 right-10 rounded-full p-1 transition-colors hover:bg-[var(--color-bg-tertiary)]"
+            aria-label="Clear selection"
+          >
+            <XIcon className="h-3.5 w-3.5 text-[var(--color-text-muted)]" />
+          </button>
+        )}
 
         {isOpen && (
           <div
