@@ -8,12 +8,14 @@ import {
   FilterPanel,
   type FilterState,
   type LookupItem,
-  type Manufacturer,
-  type Model,
 } from "@/components/filter-panel";
 import { ListingsPage, type SortOption } from "@/components/listings-page";
 import { MANUFACTURER_NAMES } from "@/constants/manufacturers";
 import { useGetCars } from "@/hooks/use-get-cars";
+import {
+  useGetManufacturers,
+  useGetModels,
+} from "@/hooks/use-get-manufacturers";
 
 // Default lookup labels for fuel and gear types
 const FUEL_TYPE_LABELS: Record<number, string> = {
@@ -66,45 +68,14 @@ export function CarsPage() {
   // Fetch cars data
   const { data, isLoading } = useGetCars(queryParams);
 
+  // Fetch manufacturers and models
+  const { data: manufacturers = [] } = useGetManufacturers();
+  const { data: models = [] } = useGetModels(filters.manufacturerId);
+
   // Get cars from current page
   const cars = data?.items ?? [];
   const total = data?.total ?? 0;
   const totalPages = data?.total_pages ?? 1;
-
-  // Derive manufacturers from car data
-  const manufacturers = useMemo<Manufacturer[]>(() => {
-    const map = new Map<number, string>();
-    for (const car of cars) {
-      if (!map.has(car.man_id) && car.manufacturer_name) {
-        map.set(car.man_id, car.manufacturer_name);
-      }
-    }
-    return Array.from(map.entries())
-      .map(([man_id, manufacturer_name]) => ({ man_id, manufacturer_name }))
-      .sort((a, b) =>
-        (a.manufacturer_name ?? "").localeCompare(b.manufacturer_name ?? ""),
-      );
-  }, [cars]);
-
-  // Derive models from car data
-  const models = useMemo<Model[]>(() => {
-    const map = new Map<number, { man_id: number; model_name: string }>();
-    for (const car of cars) {
-      if (!map.has(car.model_id) && car.model_name) {
-        map.set(car.model_id, {
-          man_id: car.man_id,
-          model_name: car.model_name,
-        });
-      }
-    }
-    return Array.from(map.entries())
-      .map(([model_id, { man_id, model_name }]) => ({
-        model_id,
-        man_id,
-        model_name,
-      }))
-      .sort((a, b) => (a.model_name ?? "").localeCompare(b.model_name ?? ""));
-  }, [cars]);
 
   // Derive fuel types from car data
   const fuelTypes = useMemo<LookupItem[]>(() => {
