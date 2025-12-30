@@ -168,12 +168,18 @@ export function SearchableSelect({
       </span>
 
       <div ref={containerRef} className="relative">
-        <button
-          type="button"
+        <div
+          role="combobox"
+          tabIndex={disabled ? -1 : 0}
           onClick={() => !disabled && setIsOpen(!isOpen)}
-          disabled={disabled}
+          onKeyDown={(e) => {
+            if (!disabled && (e.key === "Enter" || e.key === " ")) {
+              e.preventDefault();
+              setIsOpen(!isOpen);
+            }
+          }}
           className={cn(
-            "flex w-full items-center justify-between rounded-xl border px-4 py-3",
+            "flex w-full cursor-pointer items-center justify-between rounded-xl border px-4 py-3",
             "text-left text-sm transition-all duration-200",
             disabled
               ? "cursor-not-allowed border-[var(--color-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-text-muted)]"
@@ -213,7 +219,7 @@ export function SearchableSelect({
               )}
             />
           </div>
-        </button>
+        </div>
 
         {isOpen && (
           <div
