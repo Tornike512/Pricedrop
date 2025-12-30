@@ -65,7 +65,7 @@ export function useGetManufacturers() {
 export function useGetModels(manId: number | null) {
   return useQuery({
     queryKey: ["models", manId],
-    queryFn: () => getModels(manId!),
+    queryFn: () => getModels(manId as number),
     enabled: manId !== null,
     staleTime: 1000 * 60 * 30, // 30 minutes - models rarely change
   });
