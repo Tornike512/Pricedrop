@@ -12,7 +12,10 @@ import {
 } from "@/components/filter-panel";
 import { ListingsPage, type SortOption } from "@/components/listings-page";
 import { useGetCars } from "@/hooks/use-get-cars";
-import { useGetManufacturers } from "@/hooks/use-get-manufacturers";
+import {
+  useGetManufacturers,
+  useGetModels,
+} from "@/hooks/use-get-manufacturers";
 
 // Default lookup labels for fuel and gear types
 const FUEL_TYPE_LABELS: Record<number, string> = {
@@ -67,6 +70,9 @@ export function CarsPage() {
 
   // Fetch manufacturers from API
   const { data: manufacturersData } = useGetManufacturers();
+
+  // Fetch models for selected manufacturer
+  const { data: modelsData } = useGetModels(filters.manufacturerId);
 
   // Sort manufacturers alphabetically
   const manufacturers = useMemo<Manufacturer[]>(() => {
@@ -262,7 +268,7 @@ export function CarsPage() {
             filters={filters}
             onFilterChange={handleFilterChange}
             manufacturers={manufacturers}
-            models={[]}
+            models={modelsData ?? []}
             fuelTypes={fuelTypes}
             gearTypes={gearTypes}
             applyOnChange={true}

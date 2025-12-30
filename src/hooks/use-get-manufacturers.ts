@@ -11,6 +11,12 @@ export type Manufacturer = {
   manufacturer_name: string;
 };
 
+export type ModelResponse = {
+  model_id: number;
+  man_id: number;
+  name: string;
+};
+
 export type Model = {
   model_id: number;
   man_id: number;
@@ -40,7 +46,12 @@ async function getModels(manId: number): Promise<Model[]> {
     throw new Error("Failed to fetch models");
   }
 
-  return response.json() as Promise<Model[]>;
+  const data = (await response.json()) as ModelResponse[];
+  return data.map((item) => ({
+    model_id: item.model_id,
+    man_id: item.man_id,
+    model_name: item.name,
+  }));
 }
 
 export function useGetManufacturers() {
