@@ -1,3 +1,11 @@
+## <small>1.6.1 (2025-12-30)</small>
+
+* fix: update JSX setting to react-jsx and include additional type definitions ([56ed2c4](https://github.com/Tornike512/Pricedrop/commit/56ed2c4))
+* Merge branch 'main' of https://github.com/Tornike512/Pricedrop ([2c633fa](https://github.com/Tornike512/Pricedrop/commit/2c633fa))
+* chore: update package.json dependencies ([95d53fd](https://github.com/Tornike512/Pricedrop/commit/95d53fd))
+* refactor: remove obsolete button test file ([0137dbc](https://github.com/Tornike512/Pricedrop/commit/0137dbc))
+* refactor: remove obsolete test files and setup configurations ([08e36e0](https://github.com/Tornike512/Pricedrop/commit/08e36e0))
+
 ## 1.6.0 (2025-12-30)
 
 * fix: refactor SearchableSelect component to use button for toggle ([02639eb](https://github.com/Tornike512/Pricedrop/commit/02639eb))
