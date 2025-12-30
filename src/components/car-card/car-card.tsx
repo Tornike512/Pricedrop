@@ -265,33 +265,15 @@ export const CarCard = ({
   const fuelType = lookup.fuelTypes[car.fuel_type_id] ?? "Unknown";
   const gearType = lookup.gearTypes[car.gear_type_id] ?? "Unknown";
 
-  // Generate a consistent color based on manufacturer name
-  const getGradientColors = (name: string | null | undefined) => {
-    const colors = [
-      ["#d4f542", "#a3e635"], // Electric Lime (default)
-      ["#22d3ee", "#06b6d4"], // Cyan
-      ["#f472b6", "#ec4899"], // Pink
-      ["#a78bfa", "#8b5cf6"], // Purple
-      ["#fb923c", "#f97316"], // Orange
-      ["#4ade80", "#22c55e"], // Green
-    ];
-    if (!name) return colors[0];
-    const index =
-      name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) %
-      colors.length;
-    return colors[index];
-  };
-
-  const [gradientStart, gradientEnd] = getGradientColors(manufacturerName);
-
   return (
     <article
       className={cn(
         "group relative flex flex-col overflow-hidden",
         "rounded-[20px] bg-[var(--color-surface)]",
+        "border border-[var(--color-border)]",
         "shadow-[var(--shadow-sm)]",
-        "transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
-        "hover:-translate-y-1 hover:shadow-[var(--shadow-lg)]",
+        "transition-all duration-[300ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+        "hover:-translate-y-1 hover:border-[var(--color-border-strong)] hover:shadow-[var(--shadow-lg)]",
         "animate-fade-in-up",
         className,
       )}
@@ -299,12 +281,7 @@ export const CarCard = ({
       {...props}
     >
       {/* Image */}
-      <div
-        className="relative aspect-square w-full overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, ${gradientStart}20 0%, ${gradientEnd}30 100%)`,
-        }}
-      >
+      <div className="relative aspect-square w-full overflow-hidden bg-[var(--color-bg-tertiary)]">
         {car.image_url ? (
           <Image
             src={car.image_url}
@@ -317,16 +294,13 @@ export const CarCard = ({
           <>
             {/* Fallback: Manufacturer Initial */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <span
-                className="select-none font-bold font-display text-[120px] leading-none"
-                style={{ color: `${gradientStart}30` }}
-              >
+              <span className="select-none font-bold font-display text-[120px] text-[var(--color-border-strong)] leading-none">
                 {manufacturerName.charAt(0)}
               </span>
             </div>
             {/* Fallback: Car Silhouette */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <CarSilhouette className="h-24 w-full max-w-[180px] text-[var(--color-text-primary)] opacity-20" />
+              <CarSilhouette className="h-24 w-full max-w-[180px] text-[var(--color-text-muted)] opacity-30" />
             </div>
           </>
         )}
@@ -369,7 +343,7 @@ export const CarCard = ({
       {/* Content Container */}
       <div className="flex flex-1 flex-col p-5">
         {/* Year Badge */}
-        <span className="mb-2 font-medium text-[var(--color-accent-secondary)] text-xs uppercase tracking-widest">
+        <span className="mb-2 font-medium text-[var(--color-accent-primary)] text-xs uppercase tracking-widest">
           {car.prod_year}
         </span>
 
@@ -389,7 +363,7 @@ export const CarCard = ({
           <p
             className={cn(
               "font-bold font-display text-3xl tracking-tight",
-              "text-gradient",
+              "text-[var(--color-text-primary)]",
             )}
           >
             {formatPrice(car.price_usd)}
@@ -429,7 +403,7 @@ export const CarCard = ({
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
+        <div className="h-px bg-[var(--color-border)]" />
 
         {/* Footer */}
         <div className="mt-4 flex items-center justify-between">
@@ -449,8 +423,8 @@ export const CarCard = ({
               "rounded-full px-4 py-2",
               "bg-[var(--color-bg-secondary)]",
               "font-medium text-[var(--color-text-secondary)] text-sm",
-              "transition-all duration-300",
-              "hover:bg-[var(--color-accent-tertiary)] hover:text-[var(--color-accent-secondary)]",
+              "transition-all duration-200",
+              "hover:bg-[var(--color-accent-tertiary)] hover:text-[var(--color-accent-primary)]",
               "group/link",
             )}
             aria-label={`View ${title} on original source`}
@@ -459,7 +433,7 @@ export const CarCard = ({
             <ArrowUpRightIcon
               className={cn(
                 "h-3.5 w-3.5",
-                "transition-transform duration-300",
+                "transition-transform duration-200",
                 "group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5",
               )}
             />

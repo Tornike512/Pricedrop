@@ -146,7 +146,7 @@ export function Pagination({
                 "flex h-10 w-10 items-center justify-center rounded-xl",
                 "font-medium text-sm transition-all duration-200",
                 isActive
-                  ? "bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)] text-[var(--color-text-inverse)] shadow-[var(--shadow-sm)]"
+                  ? "bg-[var(--color-accent-primary)] text-[var(--color-text-inverse)] shadow-[var(--shadow-sm)]"
                   : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text-primary)]",
               )}
               aria-label={`Go to page ${item.value}`}

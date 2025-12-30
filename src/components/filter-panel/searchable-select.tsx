@@ -265,7 +265,7 @@ export function SearchableSelect({
                       "flex w-full cursor-pointer items-center justify-between rounded-lg px-4 py-3 text-left text-sm",
                       "transition-all duration-150",
                       option.value === value
-                        ? "bg-[var(--color-accent-tertiary)] text-[var(--color-accent-secondary)]"
+                        ? "bg-[var(--color-accent-tertiary)] text-[var(--color-accent-primary)]"
                         : "text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]",
                     )}
                   >
@@ -275,7 +275,7 @@ export function SearchableSelect({
                       {option.label}
                     </span>
                     {option.value === value && (
-                      <CheckIcon className="h-4 w-4 text-[var(--color-accent-secondary)]" />
+                      <CheckIcon className="h-4 w-4 text-[var(--color-accent-primary)]" />
                     )}
                   </button>
                 ))

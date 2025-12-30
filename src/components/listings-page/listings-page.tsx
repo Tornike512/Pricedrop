@@ -71,8 +71,8 @@ export function ListingsPage({
       >
         {/* Results Count */}
         <div className="flex items-center gap-4">
-          <div className="rounded-xl bg-gradient-to-br from-[var(--color-accent-tertiary)] to-[var(--color-bg-secondary)] p-2.5">
-            <CarIcon className="h-5 w-5 text-[var(--color-accent-secondary)]" />
+          <div className="rounded-xl bg-[var(--color-accent-tertiary)] p-2.5">
+            <CarIcon className="h-5 w-5 text-[var(--color-accent-primary)]" />
           </div>
           <div>
             {loading ? (

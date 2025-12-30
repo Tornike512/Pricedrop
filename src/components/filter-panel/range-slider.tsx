@@ -136,7 +136,7 @@ export function RangeSlider({
       >
         {/* Active Range */}
         <div
-          className="absolute h-full rounded-full bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)]"
+          className="absolute h-full rounded-full bg-[var(--color-accent-primary)]"
           style={{
             left: `${minPercent}%`,
             width: `${maxPercent - minPercent}%`,

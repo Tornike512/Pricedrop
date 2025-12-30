@@ -91,7 +91,7 @@ function CheckboxGroup({
               "rounded-full border px-4 py-2 text-sm",
               "transition-all duration-200",
               selected.includes(option.id)
-                ? "border-[var(--color-accent-primary)] bg-[var(--color-accent-tertiary)] font-medium text-[var(--color-accent-secondary)]"
+                ? "border-[var(--color-accent-primary)] bg-[var(--color-accent-tertiary)] font-medium text-[var(--color-accent-primary)]"
                 : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-bg-secondary)]",
             )}
           >
@@ -286,15 +286,15 @@ export function FilterPanel({
       {/* Header */}
       <div className="flex items-center justify-between border-[var(--color-divider)] border-b p-6">
         <div className="flex items-center gap-3">
-          <div className="rounded-xl bg-gradient-to-br from-[var(--color-accent-tertiary)] to-[var(--color-bg-secondary)] p-2">
-            <SlidersIcon className="h-5 w-5 text-[var(--color-accent-secondary)]" />
+          <div className="rounded-xl bg-[var(--color-accent-tertiary)] p-2">
+            <SlidersIcon className="h-5 w-5 text-[var(--color-accent-primary)]" />
           </div>
           <div>
             <h2 className="font-display font-semibold text-[var(--color-text-primary)] text-xl">
               Filters
             </h2>
             {hasActiveFilters && (
-              <p className="text-[var(--color-accent-secondary)] text-xs">
+              <p className="text-[var(--color-accent-primary)] text-xs">
                 {activeFilterCount} active
               </p>
             )}
@@ -315,7 +315,7 @@ export function FilterPanel({
       {/* Scrollable Content */}
       <div className="flex-1 space-y-8 overflow-y-auto p-6">
         {/* Deals Only Toggle - Featured */}
-        <div className="rounded-2xl border border-[var(--color-success)]/10 bg-gradient-to-r from-[var(--color-success-soft)] to-[var(--color-bg-secondary)] p-4">
+        <div className="rounded-2xl border border-[var(--color-success)]/20 bg-[var(--color-success-soft)] p-4">
           <Toggle
             label="Show Deals Only"
             description="Cars priced below predicted market value"
@@ -420,15 +420,15 @@ export function FilterPanel({
             }}
             className="h-2 w-full cursor-pointer appearance-none rounded-full bg-[var(--color-bg-tertiary)]"
             style={{
-              background: `linear-gradient(to right, var(--color-accent-primary) 0%, var(--color-accent-primary) ${
+              background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${
                 ((localFilters.mileageMax ?? mileageRange.max) /
                   mileageRange.max) *
                 100
-              }%, var(--color-bg-tertiary) ${
+              }%, #f1f5f9 ${
                 ((localFilters.mileageMax ?? mileageRange.max) /
                   mileageRange.max) *
                 100
-              }%, var(--color-bg-tertiary) 100%)`,
+              }%, #f1f5f9 100%)`,
             }}
           />
           <div className="flex justify-between text-[var(--color-text-muted)] text-xs">
@@ -504,10 +504,10 @@ export function FilterPanel({
               onClick={handleApply}
               className={cn(
                 "flex-1 rounded-xl px-4 py-3 font-medium text-sm",
-                "bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)]",
+                "bg-[var(--color-accent-primary)]",
                 "text-[var(--color-text-inverse)]",
                 "transition-all duration-200",
-                "hover:scale-[1.02] hover:shadow-[var(--shadow-md)]",
+                "hover:bg-[var(--color-accent-secondary)] hover:shadow-[var(--shadow-md)]",
                 "active:scale-[0.98]",
               )}
             >
@@ -527,10 +527,10 @@ export function FilterPanel({
         onClick={() => setIsOpen(true)}
         className={cn(
           "fixed bottom-6 left-6 z-40 flex items-center gap-3 rounded-full px-5 py-4 lg:hidden",
-          "bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)]",
+          "bg-[var(--color-accent-primary)]",
           "text-[var(--color-text-inverse)] shadow-[var(--shadow-lg)]",
           "transition-all duration-300",
-          "hover:scale-105 hover:shadow-[var(--shadow-xl)]",
+          "hover:bg-[var(--color-accent-secondary)] hover:shadow-[var(--shadow-xl)]",
           "active:scale-95",
         )}
         aria-label="Open filters"
@@ -538,7 +538,7 @@ export function FilterPanel({
         <SlidersIcon className="h-5 w-5" />
         <span className="font-medium text-sm">Filters</span>
         {hasActiveFilters && (
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-surface)] font-semibold text-[var(--color-accent-secondary)] text-xs">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-surface)] font-semibold text-[var(--color-accent-primary)] text-xs">
             {activeFilterCount}
           </span>
         )}

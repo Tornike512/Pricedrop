@@ -28,7 +28,7 @@ export function Toggle({ checked, onChange, label, description }: ToggleProps) {
           "transition-all duration-300 ease-out",
           "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)] focus-visible:ring-offset-2",
           checked
-            ? "bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)]"
+            ? "bg-[var(--color-accent-primary)]"
             : "bg-[var(--color-bg-tertiary)]",
         )}
       >
