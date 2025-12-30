@@ -40,8 +40,15 @@ export function RangeSlider({
   const trackRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState<"min" | "max" | null>(null);
 
-  const effectiveMin = valueMin ?? min;
-  const effectiveMax = valueMax ?? max;
+  // Local state for visual updates during drag
+  const [localMin, setLocalMin] = useState<number | null>(null);
+  const [localMax, setLocalMax] = useState<number | null>(null);
+
+  // Use local values while dragging, otherwise use prop values
+  const effectiveMin =
+    (dragging === "min" && localMin !== null ? localMin : valueMin) ?? min;
+  const effectiveMax =
+    (dragging === "max" && localMax !== null ? localMax : valueMax) ?? max;
 
   const getPercent = useCallback(
     (value: number) => ((value - min) / (max - min)) * 100,
@@ -86,25 +93,38 @@ export function RangeSlider({
       );
       const value = getValueFromPercent(percent);
 
+      // Update local state for visual feedback during drag
       if (dragging === "min") {
-        onChangeMin(Math.min(value, effectiveMax));
+        const currentMax = localMax ?? valueMax ?? max;
+        setLocalMin(Math.min(value, currentMax));
       } else {
-        onChangeMax(Math.max(value, effectiveMin));
+        const currentMin = localMin ?? valueMin ?? min;
+        setLocalMax(Math.max(value, currentMin));
       }
     },
     [
       dragging,
-      effectiveMin,
-      effectiveMax,
+      localMin,
+      localMax,
+      valueMin,
+      valueMax,
+      min,
+      max,
       getValueFromPercent,
-      onChangeMin,
-      onChangeMax,
     ],
   );
 
   const handleMouseUp = useCallback(() => {
+    // Commit values to parent on release
+    if (dragging === "min" && localMin !== null) {
+      onChangeMin(localMin);
+    } else if (dragging === "max" && localMax !== null) {
+      onChangeMax(localMax);
+    }
     setDragging(null);
-  }, []);
+    setLocalMin(null);
+    setLocalMax(null);
+  }, [dragging, localMin, localMax, onChangeMin, onChangeMax]);
 
   useEffect(() => {
     if (dragging) {
@@ -151,12 +171,16 @@ export function RangeSlider({
             "-translate-x-1/2 -translate-y-1/2 absolute top-1/2 h-5 w-5 cursor-pointer rounded-full",
             "bg-[var(--color-surface)] shadow-[var(--shadow-md)]",
             "border-2 border-[var(--color-accent-primary)]",
-            "transition-all duration-200 hover:scale-110",
+            "transition-[transform,box-shadow] duration-200 hover:scale-110",
             "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)] focus-visible:ring-offset-2",
             dragging === "min" && "scale-125 shadow-[var(--shadow-lg)]",
           )}
           style={{ left: `${minPercent}%` }}
-          onMouseDown={() => setDragging("min")}
+          onMouseDown={() => {
+            setLocalMin(valueMin ?? min);
+            setLocalMax(valueMax ?? max);
+            setDragging("min");
+          }}
           aria-label={`Minimum ${label}`}
           aria-valuemin={min}
           aria-valuemax={effectiveMax}
@@ -172,12 +196,16 @@ export function RangeSlider({
             "-translate-x-1/2 -translate-y-1/2 absolute top-1/2 h-5 w-5 cursor-pointer rounded-full",
             "bg-[var(--color-surface)] shadow-[var(--shadow-md)]",
             "border-2 border-[var(--color-accent-primary)]",
-            "transition-all duration-200 hover:scale-110",
+            "transition-[transform,box-shadow] duration-200 hover:scale-110",
             "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)] focus-visible:ring-offset-2",
             dragging === "max" && "scale-125 shadow-[var(--shadow-lg)]",
           )}
           style={{ left: `${maxPercent}%` }}
-          onMouseDown={() => setDragging("max")}
+          onMouseDown={() => {
+            setLocalMin(valueMin ?? min);
+            setLocalMax(valueMax ?? max);
+            setDragging("max");
+          }}
           aria-label={`Maximum ${label}`}
           aria-valuemin={effectiveMin}
           aria-valuemax={max}
