@@ -1,3 +1,9 @@
+## 1.5.0 (2025-12-30)
+
+* fix: ensure manId is safely cast to number in useGetModels hook ([18b96dc](https://github.com/Tornike512/Pricedrop/commit/18b96dc))
+* feat: add model fetching logic and integrate with CarsPage component ([e9dc87d](https://github.com/Tornike512/Pricedrop/commit/e9dc87d))
+* feat: refactor manufacturer fetching logic and sort manufacturers alphabetically ([50c8478](https://github.com/Tornike512/Pricedrop/commit/50c8478))
+
 ## 1.4.0 (2025-12-30)
 
 * feat: add hooks for fetching manufacturers and models data ([614af82](https://github.com/Tornike512/Pricedrop/commit/614af82))
