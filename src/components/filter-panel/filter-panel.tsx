@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useMemo, useState } from "react";
 import { cn } from "@/utils/cn";
 import { RangeSlider } from "./range-slider";
 import { SearchableSelect } from "./searchable-select";
+import { SingleSlider } from "./single-slider";
 import {
   DEFAULT_FILTERS,
   type FilterPanelProps,
@@ -194,7 +195,6 @@ export function FilterPanel({
 }: FilterPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [localFilters, setLocalFilters] = useState<FilterState>(filters);
-  const [draggingMileage, setDraggingMileage] = useState<number | null>(null);
 
   useEffect(() => {
     setLocalFilters(filters);
@@ -390,73 +390,15 @@ export function FilterPanel({
         </div>
 
         {/* Mileage */}
-        <div className="space-y-4">
-          <label
-            htmlFor="mileage-range"
-            className="block font-medium text-[var(--color-text-primary)] text-sm"
-          >
-            Max Mileage
-          </label>
-          <input
-            id="mileage-range"
-            type="range"
-            min={mileageRange.min}
-            max={mileageRange.max}
-            step={5000}
-            value={
-              draggingMileage ?? localFilters.mileageMax ?? mileageRange.max
-            }
-            onChange={(e) => {
-              setDraggingMileage(Number(e.target.value));
-            }}
-            onMouseUp={() => {
-              if (draggingMileage !== null) {
-                updateFilter(
-                  "mileageMax",
-                  draggingMileage === mileageRange.max ? null : draggingMileage,
-                );
-                setDraggingMileage(null);
-              }
-            }}
-            onTouchEnd={() => {
-              if (draggingMileage !== null) {
-                updateFilter(
-                  "mileageMax",
-                  draggingMileage === mileageRange.max ? null : draggingMileage,
-                );
-                setDraggingMileage(null);
-              }
-            }}
-            className="h-2 w-full cursor-pointer appearance-none rounded-full bg-[var(--color-bg-tertiary)]"
-            style={{
-              background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${
-                ((draggingMileage ??
-                  localFilters.mileageMax ??
-                  mileageRange.max) /
-                  mileageRange.max) *
-                100
-              }%, #f1f5f9 ${
-                ((draggingMileage ??
-                  localFilters.mileageMax ??
-                  mileageRange.max) /
-                  mileageRange.max) *
-                100
-              }%, #f1f5f9 100%)`,
-            }}
-          />
-          <div className="flex justify-between text-[var(--color-text-muted)] text-xs">
-            <span>{formatMileage(mileageRange.min)}</span>
-            <span className="font-medium text-[var(--color-text-primary)] text-sm">
-              {(() => {
-                const val = draggingMileage ?? localFilters.mileageMax;
-                return val && val < mileageRange.max
-                  ? formatMileage(val)
-                  : "Any";
-              })()}
-            </span>
-            <span>{formatMileage(mileageRange.max)}</span>
-          </div>
-        </div>
+        <SingleSlider
+          label="Max Mileage"
+          min={mileageRange.min}
+          max={mileageRange.max}
+          step={5000}
+          value={localFilters.mileageMax}
+          onChange={(v) => updateFilter("mileageMax", v)}
+          formatValue={formatMileage}
+        />
 
         {/* Engine Volume */}
         <RangeSlider
