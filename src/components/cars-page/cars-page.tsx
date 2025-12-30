@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 import type { LookupMap } from "@/components/car-card";
 import {
@@ -261,20 +262,12 @@ export function CarsPage() {
         <div className="mx-auto max-w-[1800px] px-4 py-5 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-accent-primary)] to-[var(--color-success)]">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="h-5 w-5 text-[var(--color-text-inverse)]"
-                  aria-hidden="true"
-                >
-                  <path d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
-                </svg>
-              </div>
-              <h1 className="font-bold text-2xl text-gradient tracking-tight">
-                Pricedrop
-              </h1>
+              <Image
+                src="/images/pricedrop-logo.png"
+                alt="Pricedrop"
+                width={140}
+                height={140}
+              />
             </div>
             <p className="text-[var(--color-text-muted)] text-sm">
               Find your perfect car deal
