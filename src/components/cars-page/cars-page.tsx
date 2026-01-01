@@ -52,14 +52,18 @@ export function CarsPage() {
     return {
       man_id: filters.manufacturerId,
       model_id: filters.modelId,
-      fuel_type_id:
-        filters.fuelTypeIds.length === 1 ? filters.fuelTypeIds[0] : null,
-      gear_type_id:
-        filters.gearTypeIds.length === 1 ? filters.gearTypeIds[0] : null,
+      fuel_type_ids:
+        filters.fuelTypeIds.length > 0 ? filters.fuelTypeIds : null,
+      gear_type_ids:
+        filters.gearTypeIds.length > 0 ? filters.gearTypeIds : null,
       prod_year_from: filters.yearMin,
       prod_year_to: filters.yearMax,
       price_from: filters.priceMin,
       price_to: filters.priceMax,
+      mileage_max: filters.mileageMax,
+      engine_volume_min: filters.engineVolumeMin,
+      engine_volume_max: filters.engineVolumeMax,
+      deals_only: filters.dealsOnly || null,
       page_size: PAGE_SIZE,
       page: currentPage,
     };
@@ -132,52 +136,8 @@ export function CarsPage() {
     };
   }, [manufacturersData]);
 
-  // Apply client-side filtering for multi-select filters and deals only
-  const filteredCars = useMemo(() => {
-    let result = [...cars];
-
-    // Filter by multiple fuel types
-    if (filters.fuelTypeIds.length > 1) {
-      result = result.filter((car) =>
-        filters.fuelTypeIds.includes(car.fuel_type_id),
-      );
-    }
-
-    // Filter by multiple gear types
-    if (filters.gearTypeIds.length > 1) {
-      result = result.filter((car) =>
-        filters.gearTypeIds.includes(car.gear_type_id),
-      );
-    }
-
-    // Filter by mileage
-    const maxMileage = filters.mileageMax;
-    if (maxMileage !== null) {
-      result = result.filter((car) => car.car_run_km <= maxMileage);
-    }
-
-    // Filter by engine volume
-    const minEngine = filters.engineVolumeMin;
-    const maxEngine = filters.engineVolumeMax;
-    if (minEngine !== null) {
-      result = result.filter((car) => car.engine_volume >= minEngine);
-    }
-    if (maxEngine !== null) {
-      result = result.filter((car) => car.engine_volume <= maxEngine);
-    }
-
-    // Filter deals only
-    if (filters.dealsOnly) {
-      result = result.filter(
-        (car) =>
-          car.has_predicted_price &&
-          car.predicted_price != null &&
-          car.price_usd < car.predicted_price,
-      );
-    }
-
-    return result;
-  }, [cars, filters]);
+  // All filtering is now done on the backend
+  const filteredCars = cars;
 
   // Apply sorting
   const sortedCars = useMemo(() => {

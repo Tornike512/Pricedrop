@@ -39,12 +39,16 @@ export type CarsResponse = {
 export type GetCarsParams = {
   man_id?: number | null;
   model_id?: number | null;
-  fuel_type_id?: number | null;
-  gear_type_id?: number | null;
+  fuel_type_ids?: number[] | null;
+  gear_type_ids?: number[] | null;
   prod_year_from?: number | null;
   prod_year_to?: number | null;
   price_from?: number | null;
   price_to?: number | null;
+  mileage_max?: number | null;
+  engine_volume_min?: number | null;
+  engine_volume_max?: number | null;
+  deals_only?: boolean | null;
   search?: string | null;
   page_size?: number;
   page?: number;
@@ -56,10 +60,10 @@ async function getCars(params?: GetCarsParams): Promise<CarsResponse> {
   if (params?.man_id != null) searchParams.set("man_id", String(params.man_id));
   if (params?.model_id != null)
     searchParams.set("model_id", String(params.model_id));
-  if (params?.fuel_type_id != null)
-    searchParams.set("fuel_type_id", String(params.fuel_type_id));
-  if (params?.gear_type_id != null)
-    searchParams.set("gear_type_id", String(params.gear_type_id));
+  if (params?.fuel_type_ids?.length)
+    searchParams.set("fuel_type_ids", params.fuel_type_ids.join(","));
+  if (params?.gear_type_ids?.length)
+    searchParams.set("gear_type_ids", params.gear_type_ids.join(","));
   if (params?.prod_year_from != null)
     searchParams.set("prod_year_from", String(params.prod_year_from));
   if (params?.prod_year_to != null)
@@ -68,6 +72,13 @@ async function getCars(params?: GetCarsParams): Promise<CarsResponse> {
     searchParams.set("price_from", String(params.price_from));
   if (params?.price_to != null)
     searchParams.set("price_to", String(params.price_to));
+  if (params?.mileage_max != null)
+    searchParams.set("mileage_max", String(params.mileage_max));
+  if (params?.engine_volume_min != null)
+    searchParams.set("engine_volume_min", String(params.engine_volume_min));
+  if (params?.engine_volume_max != null)
+    searchParams.set("engine_volume_max", String(params.engine_volume_max));
+  if (params?.deals_only) searchParams.set("deals_only", "true");
   if (params?.search) searchParams.set("search", params.search);
   searchParams.set("page_size", String(params?.page_size ?? 16));
   searchParams.set("page", String(params?.page ?? 1));
