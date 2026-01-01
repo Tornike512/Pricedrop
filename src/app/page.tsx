@@ -1,5 +1,10 @@
+import { Suspense } from "react";
 import { CarsPage } from "@/components/cars-page";
 
 export default function Home() {
-  return <CarsPage />;
+  return (
+    <Suspense>
+      <CarsPage />
+    </Suspense>
+  );
 }
