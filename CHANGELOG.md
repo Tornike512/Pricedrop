@@ -1,3 +1,33 @@
+## <small>1.6.1 (2025-12-30)</small>
+
+* fix: update JSX setting to react-jsx and include additional type definitions ([56ed2c4](https://github.com/Tornike512/Pricedrop/commit/56ed2c4))
+* Merge branch 'main' of https://github.com/Tornike512/Pricedrop ([2c633fa](https://github.com/Tornike512/Pricedrop/commit/2c633fa))
+* chore: update package.json dependencies ([95d53fd](https://github.com/Tornike512/Pricedrop/commit/95d53fd))
+* refactor: remove obsolete button test file ([0137dbc](https://github.com/Tornike512/Pricedrop/commit/0137dbc))
+* refactor: remove obsolete test files and setup configurations ([08e36e0](https://github.com/Tornike512/Pricedrop/commit/08e36e0))
+
+## 1.6.0 (2025-12-30)
+
+* fix: refactor SearchableSelect component to use button for toggle ([02639eb](https://github.com/Tornike512/Pricedrop/commit/02639eb))
+* fix: remove role attribute from SearchableSelect component ([7c100cf](https://github.com/Tornike512/Pricedrop/commit/7c100cf))
+* Merge branch 'main' of https://github.com/Tornike512/Pricedrop ([dbb1f2b](https://github.com/Tornike512/Pricedrop/commit/dbb1f2b))
+* feat: enhance accessibility of SearchableSelect component with role and keyboard support ([b174240](https://github.com/Tornike512/Pricedrop/commit/b174240))
+
+## 1.5.0 (2025-12-30)
+
+* fix: ensure manId is safely cast to number in useGetModels hook ([18b96dc](https://github.com/Tornike512/Pricedrop/commit/18b96dc))
+* feat: add model fetching logic and integrate with CarsPage component ([e9dc87d](https://github.com/Tornike512/Pricedrop/commit/e9dc87d))
+* feat: refactor manufacturer fetching logic and sort manufacturers alphabetically ([50c8478](https://github.com/Tornike512/Pricedrop/commit/50c8478))
+
+## 1.4.0 (2025-12-30)
+
+* feat: add hooks for fetching manufacturers and models data ([614af82](https://github.com/Tornike512/Pricedrop/commit/614af82))
+* feat: enhance RangeSlider and FilterPanel with improved dragging state management ([2b15131](https://github.com/Tornike512/Pricedrop/commit/2b15131))
+* feat: implement SingleSlider component for improved mileage selection ([1252c4b](https://github.com/Tornike512/Pricedrop/commit/1252c4b))
+* feat: replace logo SVG with Image component for improved rendering ([2f5bcb9](https://github.com/Tornike512/Pricedrop/commit/2f5bcb9))
+* feat: update color scheme and UI components for a modern light theme ([6d4a409](https://github.com/Tornike512/Pricedrop/commit/6d4a409))
+* fix: update comment for desktop sidebar in FilterPanel component ([5a457c5](https://github.com/Tornike512/Pricedrop/commit/5a457c5))
+
 ## 1.3.0 (2025-12-29)
 
 * feat: add manufacturer names and improve car data handling in CarCard ([b1c7644](https://github.com/Tornike512/Pricedrop/commit/b1c7644))

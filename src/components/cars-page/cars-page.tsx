@@ -8,9 +8,9 @@ import {
   FilterPanel,
   type FilterState,
   type LookupItem,
+  type Manufacturer,
 } from "@/components/filter-panel";
 import { ListingsPage, type SortOption } from "@/components/listings-page";
-import { MANUFACTURER_NAMES } from "@/constants/manufacturers";
 import { useGetCars } from "@/hooks/use-get-cars";
 import {
   useGetManufacturers,
@@ -68,9 +68,19 @@ export function CarsPage() {
   // Fetch cars data
   const { data, isLoading } = useGetCars(queryParams);
 
-  // Fetch manufacturers and models
-  const { data: manufacturers = [] } = useGetManufacturers();
-  const { data: models = [] } = useGetModels(filters.manufacturerId);
+  // Fetch manufacturers from API
+  const { data: manufacturersData } = useGetManufacturers();
+
+  // Fetch models for selected manufacturer
+  const { data: modelsData } = useGetModels(filters.manufacturerId);
+
+  // Sort manufacturers alphabetically
+  const manufacturers = useMemo<Manufacturer[]>(() => {
+    if (!manufacturersData) return [];
+    return [...manufacturersData].sort((a, b) =>
+      (a.manufacturer_name ?? "").localeCompare(b.manufacturer_name ?? ""),
+    );
+  }, [manufacturersData]);
 
   // Get cars from current page
   const cars = data?.items ?? [];
@@ -110,14 +120,17 @@ export function CarsPage() {
   }, [cars]);
 
   // Build lookup map for CarCard
-  const lookupMap = useMemo<LookupMap>(
-    () => ({
+  const lookupMap = useMemo<LookupMap>(() => {
+    const manufacturerLookup: Record<number, string> = {};
+    for (const m of manufacturersData ?? []) {
+      manufacturerLookup[m.man_id] = m.manufacturer_name;
+    }
+    return {
       fuelTypes: FUEL_TYPE_LABELS,
       gearTypes: GEAR_TYPE_LABELS,
-      manufacturers: MANUFACTURER_NAMES,
-    }),
-    [],
-  );
+      manufacturers: manufacturerLookup,
+    };
+  }, [manufacturersData]);
 
   // Apply client-side filtering for multi-select filters and deals only
   const filteredCars = useMemo(() => {
@@ -255,7 +268,7 @@ export function CarsPage() {
             filters={filters}
             onFilterChange={handleFilterChange}
             manufacturers={manufacturers}
-            models={models}
+            models={modelsData ?? []}
             fuelTypes={fuelTypes}
             gearTypes={gearTypes}
             applyOnChange={true}
