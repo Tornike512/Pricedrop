@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { LookupMap } from "@/components/car-card";
 import {
-  DEFAULT_FILTERS,
   FilterPanel,
   type FilterState,
   type LookupItem,
@@ -16,6 +16,74 @@ import {
   useGetManufacturers,
   useGetModels,
 } from "@/hooks/use-get-manufacturers";
+
+// Parse URL params to filter state
+function parseFiltersFromUrl(searchParams: URLSearchParams): FilterState {
+  const parseNumber = (key: string): number | null => {
+    const value = searchParams.get(key);
+    if (value === null) return null;
+    const num = Number(value);
+    return Number.isNaN(num) ? null : num;
+  };
+
+  const parseNumberArray = (key: string): number[] => {
+    const value = searchParams.get(key);
+    if (!value) return [];
+    return value
+      .split(",")
+      .map(Number)
+      .filter((n) => !Number.isNaN(n));
+  };
+
+  return {
+    priceMin: parseNumber("price_min"),
+    priceMax: parseNumber("price_max"),
+    manufacturerId: parseNumber("man_id"),
+    modelId: parseNumber("model_id"),
+    yearMin: parseNumber("year_min"),
+    yearMax: parseNumber("year_max"),
+    mileageMax: parseNumber("mileage_max"),
+    engineVolumeMin: parseNumber("engine_min"),
+    engineVolumeMax: parseNumber("engine_max"),
+    fuelTypeIds: parseNumberArray("fuel_types"),
+    gearTypeIds: parseNumberArray("gear_types"),
+    dealsOnly: searchParams.get("deals_only") === "true",
+  };
+}
+
+// Build URL params from filter state
+function buildUrlParams(
+  filters: FilterState,
+  page: number,
+  sortBy: SortOption,
+): URLSearchParams {
+  const params = new URLSearchParams();
+
+  if (filters.priceMin !== null)
+    params.set("price_min", String(filters.priceMin));
+  if (filters.priceMax !== null)
+    params.set("price_max", String(filters.priceMax));
+  if (filters.manufacturerId !== null)
+    params.set("man_id", String(filters.manufacturerId));
+  if (filters.modelId !== null) params.set("model_id", String(filters.modelId));
+  if (filters.yearMin !== null) params.set("year_min", String(filters.yearMin));
+  if (filters.yearMax !== null) params.set("year_max", String(filters.yearMax));
+  if (filters.mileageMax !== null)
+    params.set("mileage_max", String(filters.mileageMax));
+  if (filters.engineVolumeMin !== null)
+    params.set("engine_min", String(filters.engineVolumeMin));
+  if (filters.engineVolumeMax !== null)
+    params.set("engine_max", String(filters.engineVolumeMax));
+  if (filters.fuelTypeIds.length > 0)
+    params.set("fuel_types", filters.fuelTypeIds.join(","));
+  if (filters.gearTypeIds.length > 0)
+    params.set("gear_types", filters.gearTypeIds.join(","));
+  if (filters.dealsOnly) params.set("deals_only", "true");
+  if (page > 1) params.set("page", String(page));
+  if (sortBy !== "newest") params.set("sort", sortBy);
+
+  return params;
+}
 
 // Default lookup labels for fuel and gear types
 const FUEL_TYPE_LABELS: Record<number, string> = {
@@ -37,15 +105,31 @@ const GEAR_TYPE_LABELS: Record<number, string> = {
 const PAGE_SIZE = 16;
 
 export function CarsPage() {
-  // Filter state
-  const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // UI state
-  const [sortBy, setSortBy] = useState<SortOption>("newest");
+  // Initialize state from URL params
+  const [filters, setFilters] = useState<FilterState>(() =>
+    parseFiltersFromUrl(searchParams),
+  );
+  const [currentPage, setCurrentPage] = useState(() => {
+    const page = searchParams.get("page");
+    return page ? Number(page) || 1 : 1;
+  });
+  const [sortBy, setSortBy] = useState<SortOption>(() => {
+    const sort = searchParams.get("sort");
+    return (sort as SortOption) || "newest";
+  });
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
+
+  // Sync state to URL
+  useEffect(() => {
+    const params = buildUrlParams(filters, currentPage, sortBy);
+    const newUrl = params.toString()
+      ? `?${params.toString()}`
+      : window.location.pathname;
+    router.replace(newUrl, { scroll: false });
+  }, [filters, currentPage, sortBy, router]);
 
   // Build query params from filters
   const queryParams = useMemo(() => {
