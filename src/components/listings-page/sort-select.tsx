@@ -41,7 +41,7 @@ export function SortSelect({ value, onChange }: SortSelectProps) {
         "focus-within:border-[var(--color-accent-primary)] focus-within:ring-2 focus-within:ring-[var(--color-accent-primary)]/20",
       )}
     >
-      <SortIcon className="h-4 w-4 text-[var(--color-text-muted)]" />
+      <SortIcon className="h-4 w-4 text-[var(--color-accent-primary)]" />
       <label htmlFor="sort-select" className="sr-only">
         Sort by
       </label>

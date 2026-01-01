@@ -333,7 +333,7 @@ export function FilterPanel({
         />
 
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
+        <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-accent-primary)]/30 to-transparent" />
 
         {/* Manufacturer */}
         <SearchableSelect
@@ -362,7 +362,7 @@ export function FilterPanel({
         />
 
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
+        <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-accent-primary)]/30 to-transparent" />
 
         {/* Year Range */}
         <div className="space-y-3">
@@ -420,7 +420,7 @@ export function FilterPanel({
         />
 
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
+        <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-accent-primary)]/30 to-transparent" />
 
         {/* Fuel Type */}
         <CheckboxGroup
@@ -447,11 +447,11 @@ export function FilterPanel({
             onClick={handleClearAll}
             disabled={!hasActiveFilters}
             className={cn(
-              "flex-1 rounded-xl border border-[var(--color-border)] px-4 py-3 font-medium text-sm",
+              "flex-1 rounded-xl border px-4 py-3 font-medium text-sm",
               "transition-all duration-200",
               hasActiveFilters
-                ? "text-[var(--color-text-primary)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-bg-secondary)]"
-                : "cursor-not-allowed text-[var(--color-text-muted)] opacity-50",
+                ? "border-[var(--color-accent-primary)]/30 text-[var(--color-accent-primary)] hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-accent-tertiary)]"
+                : "cursor-not-allowed border-[var(--color-border)] text-[var(--color-text-muted)] opacity-50",
             )}
           >
             Clear All

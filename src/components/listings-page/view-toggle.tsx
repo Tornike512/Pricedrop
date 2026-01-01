@@ -68,7 +68,7 @@ export function ViewToggle({ value, onChange }: ViewToggleProps) {
           "transition-all duration-200",
           value === "grid"
             ? "bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)] text-[var(--color-text-inverse)] shadow-[var(--shadow-sm)]"
-            : "text-[var(--color-text-muted)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text-primary)]",
+            : "text-[var(--color-text-muted)] hover:bg-[var(--color-accent-tertiary)] hover:text-[var(--color-accent-primary)]",
         )}
         aria-label="Grid view"
         aria-pressed={value === "grid"}
@@ -83,7 +83,7 @@ export function ViewToggle({ value, onChange }: ViewToggleProps) {
           "transition-all duration-200",
           value === "list"
             ? "bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-primary)] text-[var(--color-text-inverse)] shadow-[var(--shadow-sm)]"
-            : "text-[var(--color-text-muted)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text-primary)]",
+            : "text-[var(--color-text-muted)] hover:bg-[var(--color-accent-tertiary)] hover:text-[var(--color-accent-primary)]",
         )}
         aria-label="List view"
         aria-pressed={value === "list"}

@@ -80,7 +80,10 @@ export function ListingsPage({
             ) : (
               <>
                 <h2 className="font-display font-semibold text-[var(--color-text-primary)] text-xl">
-                  {total.toLocaleString()} cars
+                  <span className="text-[var(--color-accent-primary)]">
+                    {total.toLocaleString()}
+                  </span>{" "}
+                  cars
                 </h2>
                 {total > 0 && (
                   <p className="text-[var(--color-text-muted)] text-sm">

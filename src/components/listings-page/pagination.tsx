@@ -112,7 +112,7 @@ export function Pagination({
           "flex h-10 w-10 items-center justify-center rounded-xl",
           "transition-all duration-200",
           canGoPrev
-            ? "text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)] active:scale-95"
+            ? "text-[var(--color-text-primary)] hover:bg-[var(--color-accent-tertiary)] hover:text-[var(--color-accent-primary)] active:scale-95"
             : "cursor-not-allowed text-[var(--color-text-muted)] opacity-40",
         )}
         aria-label="Go to previous page"
@@ -147,7 +147,7 @@ export function Pagination({
                 "font-medium text-sm transition-all duration-200",
                 isActive
                   ? "bg-[var(--color-accent-primary)] text-[var(--color-text-inverse)] shadow-[var(--shadow-sm)]"
-                  : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text-primary)]",
+                  : "text-[var(--color-text-secondary)] hover:bg-[var(--color-accent-tertiary)] hover:text-[var(--color-accent-primary)]",
               )}
               aria-label={`Go to page ${item.value}`}
               aria-current={isActive ? "page" : undefined}
@@ -167,7 +167,7 @@ export function Pagination({
           "flex h-10 w-10 items-center justify-center rounded-xl",
           "transition-all duration-200",
           canGoNext
-            ? "text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)] active:scale-95"
+            ? "text-[var(--color-text-primary)] hover:bg-[var(--color-accent-tertiary)] hover:text-[var(--color-accent-primary)] active:scale-95"
             : "cursor-not-allowed text-[var(--color-text-muted)] opacity-40",
         )}
         aria-label="Go to next page"

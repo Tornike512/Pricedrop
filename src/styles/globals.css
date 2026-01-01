@@ -5,12 +5,12 @@
 :root {
   color-scheme: light;
 
-  /* CLEAN MINIMAL - Professional Light Theme */
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: #f8fafc;
-  --color-bg-tertiary: #f1f5f9;
+  /* CLEAN MINIMAL - Blue-tinted Light Theme */
+  --color-bg-primary: #f8faff;
+  --color-bg-secondary: #f0f4ff;
+  --color-bg-tertiary: #e5ecff;
   --color-surface: #ffffff;
-  --color-surface-elevated: #ffffff;
+  --color-surface-elevated: #fafcff;
 
   --color-text-primary: #1e293b;
   --color-text-secondary: #64748b;
@@ -35,20 +35,20 @@
   --color-error: #ef4444;
   --color-error-soft: #fef2f2;
 
-  --color-border: #e2e8f0;
-  --color-border-strong: #cbd5e1;
-  --color-divider: #f1f5f9;
+  --color-border: #dbe4f5;
+  --color-border-strong: #c1d0eb;
+  --color-divider: #e8effc;
 
-  /* SHADOWS - Subtle and clean */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  /* SHADOWS - Blue-tinted for cohesion */
+  --shadow-xs: 0 1px 2px rgba(59, 130, 246, 0.08);
+  --shadow-sm: 0 1px 3px rgba(59, 130, 246, 0.12), 0 1px 2px rgba(59, 130, 246, 0.08);
   --shadow-md:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    0 4px 6px -1px rgba(59, 130, 246, 0.12), 0 2px 4px -2px rgba(59, 130, 246, 0.08);
   --shadow-lg:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    0 10px 15px -3px rgba(59, 130, 246, 0.12), 0 4px 6px -4px rgba(59, 130, 246, 0.08);
   --shadow-xl:
-    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    0 20px 25px -5px rgba(59, 130, 246, 0.12), 0 8px 10px -6px rgba(59, 130, 246, 0.08);
+  --shadow-inner: inset 0 2px 4px rgba(59, 130, 246, 0.06);
 
   /* TYPOGRAPHY */
   --font-display: "Outfit", system-ui, sans-serif;
@@ -159,13 +159,13 @@ textarea {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border-strong);
+  background: rgba(59, 130, 246, 0.3);
   border-radius: var(--radius-full);
   border: 2px solid var(--color-bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
+  background: rgba(59, 130, 246, 0.5);
 }
 
 /* SELECTION */
@@ -282,9 +282,9 @@ textarea {
   color: var(--color-accent-primary);
 }
 
-/* GLASS EFFECT - Simplified for light theme */
+/* GLASS EFFECT - Blue-tinted for light theme */
 .glass {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(248, 250, 255, 0.9);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--color-border);

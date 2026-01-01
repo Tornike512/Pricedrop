@@ -273,7 +273,7 @@ export const CarCard = ({
         "border border-[var(--color-border)]",
         "shadow-[var(--shadow-sm)]",
         "transition-all duration-[300ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
-        "hover:-translate-y-1 hover:border-[var(--color-border-strong)] hover:shadow-[var(--shadow-lg)]",
+        "hover:-translate-y-1 hover:border-[var(--color-accent-primary)]/30 hover:shadow-[var(--shadow-lg)]",
         "animate-fade-in-up",
         className,
       )}
@@ -363,7 +363,7 @@ export const CarCard = ({
           <p
             className={cn(
               "font-bold font-display text-3xl tracking-tight",
-              "text-[var(--color-text-primary)]",
+              "bg-gradient-to-r from-[var(--color-accent-primary)] to-[var(--color-accent-secondary)] bg-clip-text text-transparent",
             )}
           >
             {formatPrice(car.price_usd)}
@@ -385,31 +385,31 @@ export const CarCard = ({
         {/* Specs Grid */}
         <div className="mb-5 grid grid-cols-2 gap-3">
           <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
-            <GaugeIcon className="h-4 w-4 text-[var(--color-text-muted)]" />
+            <GaugeIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
             <span>{formatKilometers(car.car_run_km)}</span>
           </div>
           <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
-            <EngineIcon className="h-4 w-4 text-[var(--color-text-muted)]" />
+            <EngineIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
             <span>{formatEngineVolume(car.engine_volume)}</span>
           </div>
           <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
-            <FuelIcon className="h-4 w-4 text-[var(--color-text-muted)]" />
+            <FuelIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
             <span>{fuelType}</span>
           </div>
           <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
-            <GearIcon className="h-4 w-4 text-[var(--color-text-muted)]" />
+            <GearIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
             <span>{gearType}</span>
           </div>
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-[var(--color-border)]" />
+        <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-accent-primary)]/20 to-transparent" />
 
         {/* Footer */}
         <div className="mt-4 flex items-center justify-between">
           {/* Views */}
           <div className="flex items-center gap-2 text-[var(--color-text-muted)] text-sm">
-            <EyeIcon className="h-4 w-4" />
+            <EyeIcon className="h-4 w-4 text-[var(--color-accent-primary)]/50" />
             <span>{car.views.toLocaleString()} views</span>
           </div>
 
@@ -421,10 +421,10 @@ export const CarCard = ({
             className={cn(
               "inline-flex items-center gap-1.5",
               "rounded-full px-4 py-2",
-              "bg-[var(--color-bg-secondary)]",
-              "font-medium text-[var(--color-text-secondary)] text-sm",
+              "border border-[var(--color-accent-primary)]/20 bg-[var(--color-accent-tertiary)]",
+              "font-medium text-[var(--color-accent-primary)] text-sm",
               "transition-all duration-200",
-              "hover:bg-[var(--color-accent-tertiary)] hover:text-[var(--color-accent-primary)]",
+              "hover:bg-[var(--color-accent-primary)] hover:text-[var(--color-text-inverse)]",
               "group/link",
             )}
             aria-label={`View ${title} on original source`}
