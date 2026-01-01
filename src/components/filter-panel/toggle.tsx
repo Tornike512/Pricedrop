@@ -12,9 +12,9 @@ export type ToggleProps = {
 
 export function Toggle({ checked, onChange, label, description }: ToggleProps) {
   return (
-    <label
+    <div
       className={cn(
-        "group -mx-4 flex cursor-pointer items-start gap-4 p-4",
+        "group -mx-4 flex items-start gap-4 p-4",
         "rounded-xl transition-colors duration-200",
         "hover:bg-[var(--color-bg-secondary)]",
       )}
@@ -23,9 +23,10 @@ export function Toggle({ checked, onChange, label, description }: ToggleProps) {
         type="button"
         role="switch"
         aria-checked={checked}
+        aria-label={label}
         onClick={() => onChange(!checked)}
         className={cn(
-          "relative mt-0.5 h-7 w-12 shrink-0 rounded-full",
+          "relative mt-0.5 h-7 w-12 shrink-0 cursor-pointer rounded-full",
           "transition-all duration-300 ease-out",
           "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)] focus-visible:ring-offset-2",
           checked
@@ -52,6 +53,6 @@ export function Toggle({ checked, onChange, label, description }: ToggleProps) {
           </span>
         )}
       </div>
-    </label>
+    </div>
   );
 }
