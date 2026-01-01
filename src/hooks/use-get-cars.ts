@@ -74,10 +74,17 @@ async function getCars(params?: GetCarsParams): Promise<CarsResponse> {
     searchParams.set("price_to", String(params.price_to));
   if (params?.mileage_max != null)
     searchParams.set("mileage_max", String(params.mileage_max));
+  // Convert centiliters to liters for backend (frontend uses centiliters: 1500 = 1.5L)
   if (params?.engine_volume_min != null)
-    searchParams.set("engine_volume_min", String(params.engine_volume_min));
+    searchParams.set(
+      "engine_volume_min",
+      String(params.engine_volume_min / 1000),
+    );
   if (params?.engine_volume_max != null)
-    searchParams.set("engine_volume_max", String(params.engine_volume_max));
+    searchParams.set(
+      "engine_volume_max",
+      String(params.engine_volume_max / 1000),
+    );
   if (params?.deals_only) searchParams.set("deals_only", "true");
   if (params?.search) searchParams.set("search", params.search);
   searchParams.set("page_size", String(params?.page_size ?? 16));
