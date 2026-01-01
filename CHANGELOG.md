@@ -1,3 +1,15 @@
+## 1.7.0 (2026-01-01)
+
+* feat: convert engine volume parameters from centiliters to liters for backend compatibility ([3b212b4](https://github.com/Tornike512/Pricedrop/commit/3b212b4))
+* feat: enhance car filtering and querying with additional parameters ([87d25ff](https://github.com/Tornike512/Pricedrop/commit/87d25ff))
+* feat: implement URL parameter parsing and synchronization for car filters ([f8ae49e](https://github.com/Tornike512/Pricedrop/commit/f8ae49e))
+* feat: wrap CarsPage component in Suspense for improved loading handling ([40fd86f](https://github.com/Tornike512/Pricedrop/commit/40fd86f))
+* refactor: replace button elements with Button component for consistency across filter panel ([f5a1bf8](https://github.com/Tornike512/Pricedrop/commit/f5a1bf8))
+* refactor: replace dynamic fuel and gear type derivation with static lists for improved performance ([6a2e765](https://github.com/Tornike512/Pricedrop/commit/6a2e765))
+* style: update component styles for improved visual consistency and accessibility ([d821e29](https://github.com/Tornike512/Pricedrop/commit/d821e29))
+* chore: update dependencies for @inquirer and graphql packages ([0ac5fdb](https://github.com/Tornike512/Pricedrop/commit/0ac5fdb))
+* chore: update version to 1.6.1 and enhance changelog with recent changes ([c6859c2](https://github.com/Tornike512/Pricedrop/commit/c6859c2))
+
 ## <small>1.6.1 (2025-12-30)</small>
 
 * fix: update JSX setting to react-jsx and include additional type definitions ([56ed2c4](https://github.com/Tornike512/Pricedrop/commit/56ed2c4))

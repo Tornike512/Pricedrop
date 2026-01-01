@@ -1,12 +1,7 @@
 import type { LookupMap } from "@/components/car-card";
-import type { Car } from "@/hooks/use-get-cars";
+import type { Car, SortOption } from "@/hooks/use-get-cars";
 
-export type SortOption =
-  | "newest"
-  | "price_asc"
-  | "price_desc"
-  | "mileage_asc"
-  | "best_deals";
+export type { SortOption };
 
 export type ViewMode = "grid" | "list";
 
@@ -35,8 +30,7 @@ export type PaginationProps = {
 
 export const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: "newest", label: "Newest" },
+  { value: "oldest", label: "Oldest" },
   { value: "price_asc", label: "Price: Low to High" },
   { value: "price_desc", label: "Price: High to Low" },
-  { value: "mileage_asc", label: "Mileage: Low to High" },
-  { value: "best_deals", label: "Best Deals" },
 ];

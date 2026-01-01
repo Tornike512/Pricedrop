@@ -148,10 +148,11 @@ export function CarsPage() {
       engine_volume_min: filters.engineVolumeMin,
       engine_volume_max: filters.engineVolumeMax,
       deals_only: filters.dealsOnly || null,
+      sort: sortBy,
       page_size: PAGE_SIZE,
       page: currentPage,
     };
-  }, [filters, currentPage]);
+  }, [filters, currentPage, sortBy]);
 
   // Fetch cars data
   const { data, isLoading } = useGetCars(queryParams);
@@ -206,39 +207,7 @@ export function CarsPage() {
     };
   }, [manufacturersData]);
 
-  // All filtering is now done on the backend
-  const filteredCars = cars;
-
-  // Apply sorting
-  const sortedCars = useMemo(() => {
-    const result = [...filteredCars];
-
-    switch (sortBy) {
-      case "newest":
-        return result.sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-        );
-      case "price_asc":
-        return result.sort((a, b) => a.price_usd - b.price_usd);
-      case "price_desc":
-        return result.sort((a, b) => b.price_usd - a.price_usd);
-      case "mileage_asc":
-        return result.sort((a, b) => a.car_run_km - b.car_run_km);
-      case "best_deals":
-        return result
-          .filter(
-            (car) => car.has_predicted_price && car.predicted_price != null,
-          )
-          .sort((a, b) => {
-            const ratioA = a.price_usd / (a.predicted_price ?? 1);
-            const ratioB = b.price_usd / (b.predicted_price ?? 1);
-            return ratioA - ratioB;
-          });
-      default:
-        return result;
-    }
-  }, [filteredCars, sortBy]);
+  // All filtering and sorting is now done on the backend
 
   // Reset page when filters change
   const handleFilterChange = useCallback((newFilters: FilterState) => {
@@ -307,7 +276,7 @@ export function CarsPage() {
           {/* Listings */}
           <div className="flex-1">
             <ListingsPage
-              items={sortedCars}
+              items={cars}
               total={total}
               page={currentPage}
               pageSize={PAGE_SIZE}

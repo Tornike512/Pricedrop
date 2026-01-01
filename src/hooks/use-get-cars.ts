@@ -36,6 +36,8 @@ export type CarsResponse = {
   total_pages: number;
 };
 
+export type SortOption = "newest" | "oldest" | "price_asc" | "price_desc";
+
 export type GetCarsParams = {
   man_id?: number | null;
   model_id?: number | null;
@@ -50,6 +52,7 @@ export type GetCarsParams = {
   engine_volume_max?: number | null;
   deals_only?: boolean | null;
   search?: string | null;
+  sort?: SortOption | null;
   page_size?: number;
   page?: number;
 };
@@ -87,6 +90,7 @@ async function getCars(params?: GetCarsParams): Promise<CarsResponse> {
     );
   if (params?.deals_only) searchParams.set("deals_only", "true");
   if (params?.search) searchParams.set("search", params.search);
+  if (params?.sort) searchParams.set("sort", params.sort);
   searchParams.set("page_size", String(params?.page_size ?? 16));
   searchParams.set("page", String(params?.page ?? 1));
 

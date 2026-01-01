@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/utils/cn";
+import { Dropdown } from "@/components/dropdown";
 import { SORT_OPTIONS, type SortOption } from "./types";
 
 type SortSelectProps = {
@@ -8,7 +8,7 @@ type SortSelectProps = {
   onChange: (value: SortOption) => void;
 };
 
-function SortIcon({ className }: { className?: string }) {
+function SortIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -18,7 +18,7 @@ function SortIcon({ className }: { className?: string }) {
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={className}
+      className="h-4 w-4"
       aria-hidden="true"
     >
       <path d="m3 16 4 4 4-4" />
@@ -31,42 +31,12 @@ function SortIcon({ className }: { className?: string }) {
 
 export function SortSelect({ value, onChange }: SortSelectProps) {
   return (
-    <div
-      className={cn(
-        "flex items-center gap-3",
-        "rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]",
-        "px-4 py-2.5",
-        "transition-all duration-200",
-        "hover:border-[var(--color-border-strong)]",
-        "focus-within:border-[var(--color-accent-primary)] focus-within:ring-2 focus-within:ring-[var(--color-accent-primary)]/20",
-      )}
-    >
-      <SortIcon className="h-4 w-4 text-[var(--color-accent-primary)]" />
-      <label htmlFor="sort-select" className="sr-only">
-        Sort by
-      </label>
-      <select
-        id="sort-select"
-        value={value}
-        onChange={(e) => onChange(e.target.value as SortOption)}
-        className={cn(
-          "bg-transparent text-[var(--color-text-primary)] text-sm",
-          "cursor-pointer appearance-none pr-6",
-          "focus:outline-none",
-        )}
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238A8A8A'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "right 0 center",
-          backgroundSize: "16px",
-        }}
-      >
-        {SORT_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </div>
+    <Dropdown
+      options={SORT_OPTIONS}
+      value={value}
+      onChange={onChange}
+      icon={<SortIcon />}
+      className="min-w-[200px]"
+    />
   );
 }
