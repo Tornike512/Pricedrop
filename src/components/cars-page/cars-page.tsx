@@ -175,37 +175,23 @@ export function CarsPage() {
   const total = data?.total ?? 0;
   const totalPages = data?.total_pages ?? 1;
 
-  // Derive fuel types from car data
-  const fuelTypes = useMemo<LookupItem[]>(() => {
-    const ids = new Set<number>();
-    for (const car of cars) {
-      if (car.fuel_type_id != null) {
-        ids.add(car.fuel_type_id);
-      }
-    }
-    return Array.from(ids)
-      .map((id) => ({
-        id,
-        label: FUEL_TYPE_LABELS[id] ?? `Fuel Type ${id}`,
-      }))
-      .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
-  }, [cars]);
+  // Static fuel types list
+  const fuelTypes = useMemo<LookupItem[]>(
+    () =>
+      Object.entries(FUEL_TYPE_LABELS)
+        .map(([id, label]) => ({ id: Number(id), label }))
+        .sort((a, b) => a.label.localeCompare(b.label)),
+    [],
+  );
 
-  // Derive gear types from car data
-  const gearTypes = useMemo<LookupItem[]>(() => {
-    const ids = new Set<number>();
-    for (const car of cars) {
-      if (car.gear_type_id != null) {
-        ids.add(car.gear_type_id);
-      }
-    }
-    return Array.from(ids)
-      .map((id) => ({
-        id,
-        label: GEAR_TYPE_LABELS[id] ?? `Gear Type ${id}`,
-      }))
-      .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
-  }, [cars]);
+  // Static gear types list
+  const gearTypes = useMemo<LookupItem[]>(
+    () =>
+      Object.entries(GEAR_TYPE_LABELS)
+        .map(([id, label]) => ({ id: Number(id), label }))
+        .sort((a, b) => a.label.localeCompare(b.label)),
+    [],
+  );
 
   // Build lookup map for CarCard
   const lookupMap = useMemo<LookupMap>(() => {
