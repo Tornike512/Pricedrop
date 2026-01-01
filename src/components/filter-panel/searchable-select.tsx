@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "@/components/button/button";
 import { cn } from "@/utils/cn";
 
 export type SelectOption = {
@@ -168,7 +169,7 @@ export function SearchableSelect({
       </span>
 
       <div ref={containerRef} className="relative">
-        <button
+        <Button
           type="button"
           onClick={() => !disabled && setIsOpen(!isOpen)}
           disabled={disabled}
@@ -202,16 +203,16 @@ export function SearchableSelect({
               isOpen && "rotate-180",
             )}
           />
-        </button>
+        </Button>
         {value !== null && !disabled && (
-          <button
+          <Button
             type="button"
             onClick={handleClear}
             className="-translate-y-1/2 absolute top-1/2 right-10 rounded-full p-1 transition-colors hover:bg-[var(--color-bg-tertiary)]"
             aria-label="Clear selection"
           >
             <XIcon className="h-3.5 w-3.5 text-[var(--color-text-muted)]" />
-          </button>
+          </Button>
         )}
 
         {isOpen && (
@@ -256,12 +257,12 @@ export function SearchableSelect({
                 </div>
               ) : (
                 filteredOptions.map((option) => (
-                  <button
+                  <Button
                     key={option.value}
                     type="button"
                     onClick={() => handleSelect(option.value)}
                     className={cn(
-                      "flex w-full cursor-pointer items-center justify-between rounded-lg px-4 py-3 text-left text-sm",
+                      "flex w-full items-center justify-between rounded-lg px-4 py-3 text-left text-sm",
                       "transition-all duration-150",
                       option.value === value
                         ? "bg-[var(--color-accent-tertiary)] text-[var(--color-accent-primary)]"
@@ -276,7 +277,7 @@ export function SearchableSelect({
                     {option.value === value && (
                       <CheckIcon className="h-4 w-4 text-[var(--color-accent-primary)]" />
                     )}
-                  </button>
+                  </Button>
                 ))
               )}
             </div>

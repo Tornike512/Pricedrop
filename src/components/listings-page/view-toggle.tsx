@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/button/button";
 import { cn } from "@/utils/cn";
 import type { ViewMode } from "./types";
 
@@ -60,7 +61,7 @@ export function ViewToggle({ value, onChange }: ViewToggleProps) {
       role="group"
       aria-label="View mode"
     >
-      <button
+      <Button
         type="button"
         onClick={() => onChange("grid")}
         className={cn(
@@ -74,8 +75,8 @@ export function ViewToggle({ value, onChange }: ViewToggleProps) {
         aria-pressed={value === "grid"}
       >
         <GridIcon className="h-4 w-4" />
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
         onClick={() => onChange("list")}
         className={cn(
@@ -89,7 +90,7 @@ export function ViewToggle({ value, onChange }: ViewToggleProps) {
         aria-pressed={value === "list"}
       >
         <ListIcon className="h-4 w-4" />
-      </button>
+      </Button>
     </div>
   );
 }

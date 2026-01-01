@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/button/button";
 import { cn } from "@/utils/cn";
 
 export type ToggleProps = {
@@ -18,7 +19,7 @@ export function Toggle({ checked, onChange, label, description }: ToggleProps) {
         "hover:bg-[var(--color-bg-secondary)]",
       )}
     >
-      <button
+      <Button
         type="button"
         role="switch"
         aria-checked={checked}
@@ -40,7 +41,7 @@ export function Toggle({ checked, onChange, label, description }: ToggleProps) {
             checked && "translate-x-5",
           )}
         />
-      </button>
+      </Button>
       <div className="flex-1 pt-0.5">
         <span className="block font-medium text-[var(--color-text-primary)] text-sm">
           {label}

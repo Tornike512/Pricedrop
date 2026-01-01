@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { Button } from "@/components/button/button";
 import { cn } from "@/utils/cn";
 import type { PaginationProps } from "./types";
 
@@ -104,7 +105,7 @@ export function Pagination({
       aria-label="Pagination"
     >
       {/* Previous Button */}
-      <button
+      <Button
         type="button"
         onClick={() => canGoPrev && onPageChange(currentPage - 1)}
         disabled={!canGoPrev}
@@ -118,7 +119,7 @@ export function Pagination({
         aria-label="Go to previous page"
       >
         <ChevronLeftIcon className="h-5 w-5" />
-      </button>
+      </Button>
 
       {/* Page Numbers */}
       <div className="flex items-center gap-1 px-1">
@@ -138,7 +139,7 @@ export function Pagination({
           const isActive = item.value === currentPage;
 
           return (
-            <button
+            <Button
               key={item.value}
               type="button"
               onClick={() => onPageChange(item.value)}
@@ -153,13 +154,13 @@ export function Pagination({
               aria-current={isActive ? "page" : undefined}
             >
               {item.value}
-            </button>
+            </Button>
           );
         })}
       </div>
 
       {/* Next Button */}
-      <button
+      <Button
         type="button"
         onClick={() => canGoNext && onPageChange(currentPage + 1)}
         disabled={!canGoNext}
@@ -173,7 +174,7 @@ export function Pagination({
         aria-label="Go to next page"
       >
         <ChevronRightIcon className="h-5 w-5" />
-      </button>
+      </Button>
     </nav>
   );
 }

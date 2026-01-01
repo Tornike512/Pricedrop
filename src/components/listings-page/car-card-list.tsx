@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/button/button";
 import type { LookupMap } from "@/components/car-card";
 import type { Car } from "@/hooks/use-get-cars";
 import { cn } from "@/utils/cn";
@@ -230,7 +231,7 @@ export function CarCardList({
           </a>
 
           {/* Favorite Button */}
-          <button
+          <Button
             type="button"
             onClick={handleFavoriteClick}
             className={cn(
@@ -246,7 +247,7 @@ export function CarCardList({
             aria-pressed={isFavorite}
           >
             <HeartIcon className="h-5 w-5" filled={isFavorite} />
-          </button>
+          </Button>
         </div>
       </div>
     </article>

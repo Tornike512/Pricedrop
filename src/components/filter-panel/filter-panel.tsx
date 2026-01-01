@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
+import { Button } from "@/components/button/button";
 import { cn } from "@/utils/cn";
 import { RangeSlider } from "./range-slider";
 import { SearchableSelect } from "./searchable-select";
@@ -302,14 +303,14 @@ export function FilterPanel({
         </div>
 
         {/* Mobile close button */}
-        <button
+        <Button
           type="button"
           onClick={() => setIsOpen(false)}
           className="rounded-full p-2 transition-colors hover:bg-[var(--color-bg-secondary)] lg:hidden"
           aria-label="Close filters"
         >
           <XIcon className="h-5 w-5 text-[var(--color-text-muted)]" />
-        </button>
+        </Button>
       </div>
 
       {/* Scrollable Content */}
@@ -442,7 +443,7 @@ export function FilterPanel({
       {/* Footer */}
       <div className="border-[var(--color-divider)] border-t p-6">
         <div className="flex gap-3">
-          <button
+          <Button
             type="button"
             onClick={handleClearAll}
             disabled={!hasActiveFilters}
@@ -455,9 +456,9 @@ export function FilterPanel({
             )}
           >
             Clear All
-          </button>
+          </Button>
           {!applyOnChange && (
-            <button
+            <Button
               type="button"
               onClick={handleApply}
               className={cn(
@@ -470,7 +471,7 @@ export function FilterPanel({
               )}
             >
               Apply Filters
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -480,7 +481,7 @@ export function FilterPanel({
   return (
     <>
       {/* Mobile Toggle Button */}
-      <button
+      <Button
         type="button"
         onClick={() => setIsOpen(true)}
         className={cn(
@@ -500,7 +501,7 @@ export function FilterPanel({
             {activeFilterCount}
           </span>
         )}
-      </button>
+      </Button>
 
       {/* Mobile Overlay */}
       {isOpen && (
