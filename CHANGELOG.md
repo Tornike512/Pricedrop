@@ -1,3 +1,8 @@
+## 1.8.0 (2026-01-01)
+
+* feat: update changelog for version 1.7.0 and enhance car sorting functionality ([24848f3](https://github.com/Tornike512/Pricedrop/commit/24848f3))
+* refactor: change Toggle component from label to div for improved semantics ([cd23c8a](https://github.com/Tornike512/Pricedrop/commit/cd23c8a))
+
 ## 1.7.0 (2026-01-01)
 
 * feat: convert engine volume parameters from centiliters to liters for backend compatibility ([3b212b4](https://github.com/Tornike512/Pricedrop/commit/3b212b4))
