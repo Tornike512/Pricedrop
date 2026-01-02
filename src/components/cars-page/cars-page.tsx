@@ -248,8 +248,8 @@ export function CarsPage() {
               <Image
                 src="/images/pricedrop-logo.png"
                 alt="Pricedrop"
-                width={140}
-                height={140}
+                width={100}
+                height={100}
               />
             </div>
             <p className="text-[var(--color-text-muted)] text-sm">
