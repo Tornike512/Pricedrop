@@ -333,103 +333,109 @@ export const CarCard = ({
       </div>
 
       {/* Content Container */}
-      <div className="flex flex-1 flex-col p-5">
-        {/* Year Badge */}
-        <span className="mb-2 font-medium text-[var(--color-accent-primary)] text-xs uppercase tracking-widest">
-          {car.prod_year}
-        </span>
+      <div className="flex flex-1 flex-col justify-between p-5">
+        {/* Year + Title Group */}
+        <div>
+          {/* Year Badge */}
+          <span className="mb-2 font-medium text-[var(--color-accent-primary)] text-xs uppercase tracking-widest">
+            {car.prod_year}
+          </span>
 
-        {/* Title */}
-        <h3
-          className={cn(
-            "font-display font-semibold text-xl leading-tight",
-            "text-[var(--color-text-primary)]",
-            "mb-1 line-clamp-2",
-          )}
-        >
-          {manufacturerName} {modelName}
-        </h3>
-
-        {/* Price Section */}
-        <div className="mt-3 mb-5">
-          <p
+          {/* Title */}
+          <h3
             className={cn(
-              "font-bold font-display text-3xl tracking-tight",
-              "bg-gradient-to-r from-[var(--color-accent-primary)] to-[var(--color-accent-secondary)] bg-clip-text text-transparent",
+              "font-display font-semibold text-xl leading-tight",
+              "text-[var(--color-text-primary)]",
+              "mb-1 line-clamp-2",
             )}
           >
-            {formatPrice(car.price_usd)}
-          </p>
-          {car.has_predicted_price &&
-            car.predicted_price != null &&
-            car.price_usd < car.predicted_price && (
-              <p className="mt-1 text-[var(--color-text-muted)] text-sm">
-                <span className="line-through">
-                  {formatPrice(car.predicted_price)}
-                </span>
-                <span className="ml-2 font-medium text-[var(--color-success)]">
-                  Save {formatPrice(car.predicted_price - car.price_usd)}
-                </span>
-              </p>
-            )}
+            {manufacturerName} {modelName}
+          </h3>
         </div>
 
-        {/* Specs Grid */}
-        <div className="mb-5 grid grid-cols-2 gap-3">
-          <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
-            <GaugeIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
-            <span>{formatKilometers(car.car_run_km)}</span>
-          </div>
-          <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
-            <EngineIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
-            <span>{formatEngineVolume(car.engine_volume)}</span>
-          </div>
-          <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
-            <FuelIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
-            <span>{fuelType}</span>
-          </div>
-          <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
-            <GearIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
-            <span>{gearType}</span>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-accent-primary)]/20 to-transparent" />
-
-        {/* Footer */}
-        <div className="mt-4 flex items-center justify-between">
-          {/* Views */}
-          <div className="flex items-center gap-2 text-[var(--color-text-muted)] text-sm">
-            <EyeIcon className="h-4 w-4 text-[var(--color-accent-primary)]/50" />
-            <span>{car.views.toLocaleString()} views</span>
-          </div>
-
-          {/* View Listing Link */}
-          <a
-            href={car.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              "inline-flex items-center gap-1.5",
-              "rounded-full px-4 py-2",
-              "border border-[var(--color-accent-primary)]/20 bg-[var(--color-accent-tertiary)]",
-              "font-medium text-[var(--color-accent-primary)] text-sm",
-              "transition-all duration-200",
-              "hover:bg-[var(--color-accent-primary)] hover:text-[var(--color-text-inverse)]",
-              "group/link",
-            )}
-            aria-label={`View ${title} on original source`}
-          >
-            <span>View</span>
-            <ArrowUpRightIcon
+        {/* Price + Specs + Footer Group */}
+        <div>
+          {/* Price Section */}
+          <div className="mt-3 mb-5">
+            <p
               className={cn(
-                "h-3.5 w-3.5",
-                "transition-transform duration-200",
-                "group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5",
+                "font-bold font-display text-3xl tracking-tight",
+                "bg-gradient-to-r from-[var(--color-accent-primary)] to-[var(--color-accent-secondary)] bg-clip-text text-transparent",
               )}
-            />
-          </a>
+            >
+              {formatPrice(car.price_usd)}
+            </p>
+            {car.has_predicted_price &&
+              car.predicted_price != null &&
+              car.price_usd < car.predicted_price && (
+                <p className="mt-1 text-[var(--color-text-muted)] text-sm">
+                  <span className="line-through">
+                    {formatPrice(car.predicted_price)}
+                  </span>
+                  <span className="ml-2 font-medium text-[var(--color-success)]">
+                    Save {formatPrice(car.predicted_price - car.price_usd)}
+                  </span>
+                </p>
+              )}
+          </div>
+
+          {/* Specs Grid */}
+          <div className="mb-5 grid grid-cols-2 gap-3">
+            <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
+              <GaugeIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
+              <span>{formatKilometers(car.car_run_km)}</span>
+            </div>
+            <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
+              <EngineIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
+              <span>{formatEngineVolume(car.engine_volume)}</span>
+            </div>
+            <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
+              <FuelIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
+              <span>{fuelType}</span>
+            </div>
+            <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
+              <GearIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
+              <span>{gearType}</span>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-accent-primary)]/20 to-transparent" />
+
+          {/* Footer */}
+          <div className="mt-4 flex items-center justify-between">
+            {/* Views */}
+            <div className="flex items-center gap-2 text-[var(--color-text-muted)] text-sm">
+              <EyeIcon className="h-4 w-4 text-[var(--color-accent-primary)]/50" />
+              <span>{car.views.toLocaleString()} views</span>
+            </div>
+
+            {/* View Listing Link */}
+            <a
+              href={car.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                "inline-flex items-center gap-1.5",
+                "rounded-full px-4 py-2",
+                "border border-[var(--color-accent-primary)]/20 bg-[var(--color-accent-tertiary)]",
+                "font-medium text-[var(--color-accent-primary)] text-sm",
+                "transition-all duration-200",
+                "hover:bg-[var(--color-accent-primary)] hover:text-[var(--color-text-inverse)]",
+                "group/link",
+              )}
+              aria-label={`View ${title} on original source`}
+            >
+              <span>View</span>
+              <ArrowUpRightIcon
+                className={cn(
+                  "h-3.5 w-3.5",
+                  "transition-transform duration-200",
+                  "group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5",
+                )}
+              />
+            </a>
+          </div>
         </div>
       </div>
     </article>
