@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
+import { Button } from "../button";
 
 export type DropdownOption<T extends string = string> = {
   value: T;
@@ -86,7 +87,7 @@ export function Dropdown<T extends string = string>({
 
   return (
     <div ref={containerRef} className={cn("relative", className)}>
-      <button
+      <Button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="listbox"
@@ -110,7 +111,7 @@ export function Dropdown<T extends string = string>({
           {selectedOption?.label ?? placeholder}
         </span>
         <ChevronIcon open={isOpen} className="text-[var(--color-text-muted)]" />
-      </button>
+      </Button>
 
       {isOpen && (
         <div
