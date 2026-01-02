@@ -48,6 +48,7 @@ export function ListingsPage({
   };
 
   const handlePageChange = (newPage: number) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onPageChange?.(newPage);
   };
 
