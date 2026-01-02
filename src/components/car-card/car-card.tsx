@@ -54,13 +54,6 @@ function formatEngineVolume(volume: number): string {
   return `${(volume / 1000).toFixed(1)}L`;
 }
 
-function isNew(createdAt: string): boolean {
-  const created = new Date(createdAt);
-  const now = new Date();
-  const hoursDiff = (now.getTime() - created.getTime()) / (1000 * 60 * 60);
-  return hoursDiff <= 24;
-}
-
 const dealScoreConfig: Record<
   DealScore,
   { label: string; className: string; icon: string }
@@ -256,7 +249,6 @@ export const CarCard = ({
   ...props
 }: CarCardProps) => {
   const dealScore = getDealScore(car);
-  const isNewListing = isNew(car.created_at);
   const manufacturerName =
     car.manufacturer_name ?? lookup.manufacturers?.[car.man_id] ?? "Unknown";
   const modelName =
@@ -307,7 +299,7 @@ export const CarCard = ({
 
         {/* Badges Row */}
         <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
-          {isNewListing && (
+          {car.views <= 100 && (
             <span
               className={cn(
                 "inline-flex items-center gap-1.5",
