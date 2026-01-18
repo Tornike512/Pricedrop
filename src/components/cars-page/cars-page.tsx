@@ -104,6 +104,26 @@ const GEAR_TYPE_LABELS: Record<number, string> = {
 
 const PAGE_SIZE = 16;
 
+function HamburgerIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <line x1="4" x2="20" y1="12" y2="12" />
+      <line x1="4" x2="20" y1="6" y2="6" />
+      <line x1="4" x2="20" y1="18" y2="18" />
+    </svg>
+  );
+}
+
 export function CarsPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -121,6 +141,23 @@ export function CarsPage() {
     return (sort as SortOption) || "newest";
   });
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  // Count active filters for badge
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (filters.priceMin !== null || filters.priceMax !== null) count++;
+    if (filters.manufacturerId !== null) count++;
+    if (filters.modelId !== null) count++;
+    if (filters.yearMin !== null || filters.yearMax !== null) count++;
+    if (filters.mileageMax !== null) count++;
+    if (filters.engineVolumeMin !== null || filters.engineVolumeMax !== null)
+      count++;
+    if (filters.fuelTypeIds.length > 0) count++;
+    if (filters.gearTypeIds.length > 0) count++;
+    if (filters.dealsOnly) count++;
+    return count;
+  }, [filters]);
 
   // Sync state to URL
   useEffect(() => {
@@ -241,7 +278,7 @@ export function CarsPage() {
   return (
     <div className="min-h-screen bg-background-100">
       {/* Header */}
-      <header className="border-[var(--color-border)] border-b bg-[var(--color-surface)]/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-[var(--color-border)] border-b bg-[var(--color-surface)]">
         <div className="mx-auto max-w-[1800px] px-4 py-5 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-4">
             <div className="flex shrink-0 items-center gap-3">
@@ -252,9 +289,24 @@ export function CarsPage() {
                 height={100}
               />
             </div>
-            <p className="hidden text-[var(--color-text-muted)] text-sm sm:block">
-              Find your perfect car deal
-            </p>
+            <div className="flex items-center gap-4">
+              <p className="hidden text-[var(--color-text-muted)] text-sm sm:block">
+                Find your perfect car deal
+              </p>
+              <button
+                type="button"
+                onClick={() => setIsFilterOpen(true)}
+                className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-bg-secondary)] lg:hidden"
+                aria-label="Open filters"
+              >
+                <HamburgerIcon className="h-5 w-5" />
+                {activeFilterCount > 0 && (
+                  <span className="-top-1 -right-1 absolute flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-accent-primary)] font-semibold text-[var(--color-text-inverse)] text-xs">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -271,6 +323,8 @@ export function CarsPage() {
             fuelTypes={fuelTypes}
             gearTypes={gearTypes}
             applyOnChange={true}
+            isOpen={isFilterOpen}
+            onOpenChange={setIsFilterOpen}
           />
 
           {/* Listings */}

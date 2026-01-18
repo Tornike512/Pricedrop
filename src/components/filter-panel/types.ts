@@ -41,6 +41,8 @@ export type FilterPanelProps = {
   yearRange?: { min: number; max: number };
   mileageRange?: { min: number; max: number };
   engineVolumeRange?: { min: number; max: number };
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
 export const DEFAULT_FILTERS: FilterState = {

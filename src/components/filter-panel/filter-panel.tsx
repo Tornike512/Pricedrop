@@ -193,9 +193,14 @@ export function FilterPanel({
   yearRange = { min: 2000, max: new Date().getFullYear() },
   mileageRange = { min: 0, max: 500000 },
   engineVolumeRange = { min: 500, max: 6000 },
+  isOpen = false,
+  onOpenChange,
 }: FilterPanelProps) {
-  const [isOpen, setIsOpen] = useState(false);
   const [localFilters, setLocalFilters] = useState<FilterState>(filters);
+
+  const setIsOpen = (open: boolean) => {
+    onOpenChange?.(open);
+  };
 
   useEffect(() => {
     setLocalFilters(filters);
@@ -480,29 +485,6 @@ export function FilterPanel({
 
   return (
     <>
-      {/* Mobile Toggle Button */}
-      <Button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        className={cn(
-          "fixed bottom-6 left-6 z-40 flex items-center gap-3 rounded-full px-5 py-4 lg:hidden",
-          "bg-[var(--color-accent-primary)]",
-          "text-[var(--color-text-inverse)] shadow-[var(--shadow-lg)]",
-          "transition-all duration-300",
-          "hover:bg-[var(--color-accent-secondary)] hover:shadow-[var(--shadow-xl)]",
-          "active:scale-95",
-        )}
-        aria-label="Open filters"
-      >
-        <SlidersIcon className="h-5 w-5" />
-        <span className="font-medium text-sm">Filters</span>
-        {hasActiveFilters && (
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-surface)] font-semibold text-[var(--color-accent-primary)] text-xs">
-            {activeFilterCount}
-          </span>
-        )}
-      </Button>
-
       {/* Mobile Overlay */}
       {isOpen && (
         <div
