@@ -12,6 +12,7 @@ export type ListingsPageProps = {
   pageSize: number;
   totalPages: number;
   loading?: boolean;
+  refetching?: boolean;
   lookup: LookupMap;
   sortBy?: SortOption;
   viewMode?: ViewMode;

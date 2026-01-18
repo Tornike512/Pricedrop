@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LookupMap } from "@/components/car-card";
 import {
   FilterPanel,
@@ -11,7 +11,12 @@ import {
   type Manufacturer,
 } from "@/components/filter-panel";
 import { ListingsPage, type SortOption } from "@/components/listings-page";
-import { useGetCars } from "@/hooks/use-get-cars";
+import { useCountdown } from "@/hooks/use-countdown";
+import {
+  POLLING_INTERVAL_FAST,
+  POLLING_INTERVAL_SLOW,
+  useGetCars,
+} from "@/hooks/use-get-cars";
 import {
   useGetManufacturers,
   useGetModels,
@@ -124,6 +129,34 @@ function HamburgerIcon({ className }: { className?: string }) {
   );
 }
 
+function RefreshIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+      <path d="M21 3v5h-5" />
+    </svg>
+  );
+}
+
+function formatTime(seconds: number): string {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  if (mins > 0) {
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  }
+  return `${secs}s`;
+}
+
 export function CarsPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -142,6 +175,16 @@ export function CarsPage() {
   });
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [newCarsCount, setNewCarsCount] = useState(0);
+  const [pollingInterval, setPollingInterval] = useState(POLLING_INTERVAL_FAST);
+  const [showTimer, setShowTimer] = useState(false);
+  const previousCarIdsRef = useRef<Set<number>>(new Set());
+
+  // Countdown timer for next refresh (only active when showTimer is true)
+  const { secondsRemaining, reset: resetCountdown } = useCountdown({
+    duration: POLLING_INTERVAL_SLOW,
+    enabled: showTimer,
+  });
 
   // Count active filters for badge
   const activeFilterCount = useMemo(() => {
@@ -191,8 +234,41 @@ export function CarsPage() {
     };
   }, [filters, currentPage, sortBy]);
 
-  // Fetch cars data
-  const { data, isLoading } = useGetCars(queryParams);
+  // Fetch cars data with polling
+  const { data, isLoading, isFetching } = useGetCars(
+    queryParams,
+    pollingInterval,
+  );
+
+  // Detect new cars and manage polling/timer state
+  useEffect(() => {
+    if (!data?.items) return;
+
+    const currentCarIds = new Set(data.items.map((car) => car.car_id));
+
+    // Only check for new cars if we have previous data (not initial load)
+    if (previousCarIdsRef.current.size > 0) {
+      const newCars = data.items.filter(
+        (car) => !previousCarIdsRef.current.has(car.car_id),
+      );
+      if (newCars.length > 0) {
+        // New cars found!
+        setNewCarsCount(newCars.length);
+        // Switch to slow polling and show timer
+        setPollingInterval(POLLING_INTERVAL_SLOW);
+        setShowTimer(true);
+        resetCountdown();
+        // Clear the "new cars" indicator after 5 seconds (timer stays visible)
+        setTimeout(() => setNewCarsCount(0), 5000);
+      } else {
+        // No new cars - go back to silent fast polling
+        setPollingInterval(POLLING_INTERVAL_FAST);
+        setShowTimer(false);
+      }
+    }
+
+    previousCarIdsRef.current = currentCarIds;
+  }, [data?.items, resetCountdown]);
 
   // Fetch manufacturers from API
   const { data: manufacturersData } = useGetManufacturers();
@@ -279,8 +355,8 @@ export function CarsPage() {
     <div className="min-h-screen bg-background-100">
       {/* Header */}
       <header className="sticky top-0 z-30 border-[var(--color-border)] border-b bg-[var(--color-surface)]">
-        <div className="mx-auto max-w-[1800px] px-4 py-5 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-4">
+        <div className="mx-auto max-w-[1800px] px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
+          <div className="flex items-center justify-between gap-3">
             <div className="flex shrink-0 items-center gap-3">
               <Image
                 src="/images/pricedrop-logo.png"
@@ -289,10 +365,33 @@ export function CarsPage() {
                 height={100}
               />
             </div>
-            <div className="flex items-center gap-4">
-              <p className="hidden text-[var(--color-text-muted)] text-sm sm:block">
-                Find your perfect car deal
-              </p>
+
+            {/* Refresh Timer & New Cars Indicator - Only shown after new cars are found */}
+            <div className="flex flex-1 items-center justify-center gap-2">
+              {newCarsCount > 0 ? (
+                <div className="flex items-center gap-2 rounded-full bg-[var(--color-success-soft)] px-3 py-1.5 text-[var(--color-success)]">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-success)] opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-success)]" />
+                  </span>
+                  <span className="font-medium text-xs sm:text-sm">
+                    +{newCarsCount} new cars added!
+                  </span>
+                </div>
+              ) : showTimer ? (
+                <div className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-1.5 text-[var(--color-text-muted)]">
+                  <RefreshIcon className="h-3.5 w-3.5" />
+                  <span className="text-xs sm:text-sm">
+                    <span className="hidden sm:inline">New cars in </span>
+                    <span className="font-medium font-mono text-[var(--color-text-primary)]">
+                      {formatTime(secondsRemaining)}
+                    </span>
+                  </span>
+                </div>
+              ) : null}
+            </div>
+
+            <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setIsFilterOpen(true)}
@@ -336,6 +435,7 @@ export function CarsPage() {
               pageSize={PAGE_SIZE}
               totalPages={totalPages}
               loading={isLoading}
+              refetching={isFetching && !isLoading}
               lookup={lookupMap}
               sortBy={sortBy}
               favorites={favorites}

@@ -104,9 +104,18 @@ async function getCars(params?: GetCarsParams): Promise<CarsResponse> {
   return response.json() as Promise<CarsResponse>;
 }
 
-export function useGetCars(params?: GetCarsParams) {
+// Polling intervals in milliseconds
+export const POLLING_INTERVAL_FAST = 10 * 1000; // 10 seconds - default check interval
+export const POLLING_INTERVAL_SLOW = 60 * 1000; // 60 seconds - after new data found
+
+export function useGetCars(
+  params?: GetCarsParams,
+  pollingInterval: number | false = POLLING_INTERVAL_FAST,
+) {
   return useQuery({
     queryKey: ["cars", params],
     queryFn: () => getCars(params),
+    refetchInterval: pollingInterval,
+    refetchIntervalInBackground: false,
   });
 }

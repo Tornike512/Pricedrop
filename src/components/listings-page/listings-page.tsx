@@ -36,6 +36,7 @@ export function ListingsPage({
   pageSize,
   totalPages,
   loading = false,
+  refetching = false,
   lookup,
   sortBy = "newest",
   favorites = new Set(),
@@ -109,7 +110,13 @@ export function ListingsPage({
         <EmptyState />
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
+          <div
+            className={cn(
+              "grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4",
+              "transition-opacity duration-300",
+              refetching && "opacity-60",
+            )}
+          >
             {items.map((car, index) => (
               <CarCard
                 key={car.car_id}
