@@ -1,3 +1,11 @@
+## 1.10.0 (2026-01-18)
+
+* feat: add filter panel toggle functionality and active filter count display ([3f5e395](https://github.com/Tornike512/Pricedrop/commit/3f5e395))
+* feat: add pnpm run lint:fix command to permissions ([80160d7](https://github.com/Tornike512/Pricedrop/commit/80160d7))
+* feat: enhance layout and responsiveness across CarsPage and ListingsPage components ([9c1cf04](https://github.com/Tornike512/Pricedrop/commit/9c1cf04))
+* feat: improve layout of CarCard and ListingsPage for better responsiveness ([01e2902](https://github.com/Tornike512/Pricedrop/commit/01e2902))
+* Merge branch 'main' of https://github.com/Tornike512/Pricedrop ([634bdf4](https://github.com/Tornike512/Pricedrop/commit/634bdf4))
+
 ## 1.9.0 (2026-01-02)
 
 * feat: add smooth scroll to top on page change in ListingsPage ([e44b2e6](https://github.com/Tornike512/Pricedrop/commit/e44b2e6))
