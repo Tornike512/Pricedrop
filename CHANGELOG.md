@@ -1,3 +1,8 @@
+## 1.11.0 (2026-01-18)
+
+* chore: update version to 1.10.0 in package.json and update CHANGELOG.md ([28e4f18](https://github.com/Tornike512/Pricedrop/commit/28e4f18))
+* feat: implement polling for new cars with countdown timer and refresh indicator ([f7f2c70](https://github.com/Tornike512/Pricedrop/commit/f7f2c70))
+
 ## 1.10.0 (2026-01-18)
 
 * feat: add filter panel toggle functionality and active filter count display ([3f5e395](https://github.com/Tornike512/Pricedrop/commit/3f5e395))
