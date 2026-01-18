@@ -65,13 +65,13 @@ export function ListingsPage({
       <div
         className={cn(
           "flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between",
-          "rounded-2xl bg-[var(--color-surface)] p-5",
+          "rounded-2xl bg-[var(--color-surface)] p-4 sm:p-5",
           "border border-[var(--color-border)]",
           "shadow-[var(--shadow-sm)]",
         )}
       >
         {/* Results Count */}
-        <div className="flex items-center gap-4">
+        <div className="flex min-w-0 items-center gap-3 sm:gap-4">
           <div className="rounded-xl bg-[var(--color-accent-tertiary)] p-2.5">
             <CarIcon className="h-5 w-5 text-[var(--color-accent-primary)]" />
           </div>

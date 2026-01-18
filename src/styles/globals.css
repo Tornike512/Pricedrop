@@ -119,6 +119,14 @@ body {
   background-color: var(--color-bg-secondary);
 }
 
+/* Prevent horizontal scroll on screens >= 320px */
+@media (min-width: 320px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+}
+
 /* TYPOGRAPHY */
 h1,
 h2,

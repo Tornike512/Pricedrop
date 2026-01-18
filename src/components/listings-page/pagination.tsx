@@ -45,10 +45,15 @@ type PageItem =
   | { type: "page"; value: number }
   | { type: "ellipsis"; key: string };
 
-function getPageNumbers(currentPage: number, totalPages: number): PageItem[] {
+function getPageNumbers(
+  currentPage: number,
+  totalPages: number,
+  compact = false,
+): PageItem[] {
   const pages: PageItem[] = [];
+  const maxVisible = compact ? 5 : 7;
 
-  if (totalPages <= 7) {
+  if (totalPages <= maxVisible) {
     for (let i = 1; i <= totalPages; i++) {
       pages.push({ type: "page", value: i });
     }
@@ -97,8 +102,8 @@ export function Pagination({
   return (
     <nav
       className={cn(
-        "inline-flex items-center gap-1",
-        "rounded-2xl bg-[var(--color-surface)] p-2",
+        "inline-flex max-w-full flex-wrap items-center justify-center gap-1",
+        "rounded-2xl bg-[var(--color-surface)] p-1.5 sm:p-2",
         "border border-[var(--color-border)]",
         "shadow-[var(--shadow-sm)]",
       )}
@@ -110,7 +115,7 @@ export function Pagination({
         onClick={() => canGoPrev && onPageChange(currentPage - 1)}
         disabled={!canGoPrev}
         className={cn(
-          "flex h-10 w-10 items-center justify-center rounded-xl",
+          "flex h-8 w-8 items-center justify-center rounded-lg sm:h-10 sm:w-10 sm:rounded-xl",
           "transition-all duration-200",
           canGoPrev
             ? "text-[var(--color-text-primary)] hover:bg-[var(--color-accent-tertiary)] hover:text-[var(--color-accent-primary)] active:scale-95"
@@ -118,17 +123,17 @@ export function Pagination({
         )}
         aria-label="Go to previous page"
       >
-        <ChevronLeftIcon className="h-5 w-5" />
+        <ChevronLeftIcon className="h-4 w-4 sm:h-5 sm:w-5" />
       </Button>
 
       {/* Page Numbers */}
-      <div className="flex items-center gap-1 px-1">
+      <div className="flex flex-wrap items-center justify-center gap-1 px-0.5 sm:px-1">
         {pageNumbers.map((item) => {
           if (item.type === "ellipsis") {
             return (
               <span
                 key={item.key}
-                className="flex h-10 w-10 items-center justify-center text-[var(--color-text-muted)]"
+                className="flex h-8 w-8 items-center justify-center text-[var(--color-text-muted)] sm:h-10 sm:w-10"
                 aria-hidden="true"
               >
                 ...
@@ -144,8 +149,8 @@ export function Pagination({
               type="button"
               onClick={() => onPageChange(item.value)}
               className={cn(
-                "flex h-10 w-10 items-center justify-center rounded-xl",
-                "font-medium text-sm transition-all duration-200",
+                "flex h-8 w-8 items-center justify-center rounded-lg sm:h-10 sm:w-10 sm:rounded-xl",
+                "font-medium text-xs transition-all duration-200 sm:text-sm",
                 isActive
                   ? "bg-[var(--color-accent-primary)] text-[var(--color-text-inverse)] shadow-[var(--shadow-sm)]"
                   : "text-[var(--color-text-secondary)] hover:bg-[var(--color-accent-tertiary)] hover:text-[var(--color-accent-primary)]",
@@ -165,7 +170,7 @@ export function Pagination({
         onClick={() => canGoNext && onPageChange(currentPage + 1)}
         disabled={!canGoNext}
         className={cn(
-          "flex h-10 w-10 items-center justify-center rounded-xl",
+          "flex h-8 w-8 items-center justify-center rounded-lg sm:h-10 sm:w-10 sm:rounded-xl",
           "transition-all duration-200",
           canGoNext
             ? "text-[var(--color-text-primary)] hover:bg-[var(--color-accent-tertiary)] hover:text-[var(--color-accent-primary)] active:scale-95"
@@ -173,7 +178,7 @@ export function Pagination({
         )}
         aria-label="Go to next page"
       >
-        <ChevronRightIcon className="h-5 w-5" />
+        <ChevronRightIcon className="h-4 w-4 sm:h-5 sm:w-5" />
       </Button>
     </nav>
   );

@@ -36,7 +36,7 @@ export function SortSelect({ value, onChange }: SortSelectProps) {
       value={value}
       onChange={onChange}
       icon={<SortIcon />}
-      className="min-w-[200px]"
+      className="w-full sm:w-auto sm:min-w-[200px]"
     />
   );
 }

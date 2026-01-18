@@ -243,8 +243,8 @@ export function CarsPage() {
       {/* Header */}
       <header className="border-[var(--color-border)] border-b bg-[var(--color-surface)]/80 backdrop-blur-xl">
         <div className="mx-auto max-w-[1800px] px-4 py-5 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex shrink-0 items-center gap-3">
               <Image
                 src="/images/pricedrop-logo.png"
                 alt="Pricedrop"
@@ -252,7 +252,7 @@ export function CarsPage() {
                 height={100}
               />
             </div>
-            <p className="text-[var(--color-text-muted)] text-sm">
+            <p className="hidden text-[var(--color-text-muted)] text-sm sm:block">
               Find your perfect car deal
             </p>
           </div>
@@ -260,7 +260,7 @@ export function CarsPage() {
       </header>
 
       {/* Main Content */}
-      <main className="mx-auto max-w-[1800px] px-4 py-6 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-[1800px] overflow-hidden px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex gap-6">
           {/* Filter Panel */}
           <FilterPanel
@@ -274,7 +274,7 @@ export function CarsPage() {
           />
 
           {/* Listings */}
-          <div className="flex-1">
+          <div className="min-w-0 flex-1">
             <ListingsPage
               items={cars}
               total={total}
