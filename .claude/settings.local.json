@@ -6,7 +6,8 @@
       "Bash(npm run dev)",
       "Bash(timeout /t 5 /nobreak)",
       "Skill(frontend-design)",
-      "Bash(pnpm lint:fix:*)"
+      "Bash(pnpm lint:fix:*)",
+      "Bash(pnpm run lint:fix:*)"
     ]
   }
 }
