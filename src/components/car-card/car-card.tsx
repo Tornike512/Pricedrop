@@ -261,7 +261,7 @@ export const CarCard = ({
     <article
       className={cn(
         "group relative flex flex-col overflow-hidden",
-        "rounded-[20px] bg-[var(--color-surface)]",
+        "rounded-xl bg-[var(--color-surface)] sm:rounded-[20px]",
         "border border-[var(--color-border)]",
         "shadow-[var(--shadow-sm)]",
         "transition-all duration-[300ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
@@ -273,7 +273,7 @@ export const CarCard = ({
       {...props}
     >
       {/* Image */}
-      <div className="relative aspect-square w-full overflow-hidden bg-[var(--color-bg-tertiary)]">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--color-bg-tertiary)] sm:aspect-square">
         {car.image_url ? (
           <Image
             src={car.image_url}
@@ -298,20 +298,20 @@ export const CarCard = ({
         )}
 
         {/* Badges Row */}
-        <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
+        <div className="absolute top-2 left-2 z-10 flex flex-wrap gap-1 sm:top-4 sm:left-4 sm:gap-2">
           {car.views <= 100 && (
             <span
               className={cn(
-                "inline-flex items-center gap-1.5",
-                "rounded-full px-3 py-1",
+                "inline-flex items-center gap-1",
+                "rounded-full px-2 py-0.5 sm:px-3 sm:py-1",
                 "bg-[var(--color-accent-primary)] text-[var(--color-text-inverse)]",
-                "font-medium text-xs uppercase tracking-wide",
+                "font-medium text-[10px] uppercase tracking-wide sm:text-xs",
                 "shadow-[var(--shadow-sm)]",
               )}
             >
-              <span className="relative flex h-1.5 w-1.5">
+              <span className="relative flex h-1 w-1 sm:h-1.5 sm:w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
+                <span className="relative inline-flex h-1 w-1 rounded-full bg-white sm:h-1.5 sm:w-1.5" />
               </span>
               New
             </span>
@@ -319,13 +319,15 @@ export const CarCard = ({
           {dealScore && dealScore !== "fair" && (
             <span
               className={cn(
-                "inline-flex items-center gap-1.5",
-                "rounded-full px-3 py-1",
-                "font-medium text-xs tracking-wide",
+                "hidden items-center gap-1 sm:inline-flex",
+                "rounded-full px-2 py-0.5 sm:px-3 sm:py-1",
+                "font-medium text-[10px] tracking-wide sm:text-xs",
                 dealScoreConfig[dealScore].className,
               )}
             >
-              {dealScore === "great" && <SparklesIcon className="h-3 w-3" />}
+              {dealScore === "great" && (
+                <SparklesIcon className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+              )}
               {dealScoreConfig[dealScore].label}
             </span>
           )}
@@ -333,20 +335,20 @@ export const CarCard = ({
       </div>
 
       {/* Content Container */}
-      <div className="flex flex-1 flex-col justify-between p-5">
+      <div className="flex flex-1 flex-col justify-between p-2.5 sm:p-5">
         {/* Year + Title Group */}
         <div>
           {/* Year Badge */}
-          <span className="mb-2 font-medium text-[var(--color-accent-primary)] text-xs uppercase tracking-widest">
+          <span className="mb-0.5 font-medium text-[10px] text-[var(--color-accent-primary)] uppercase tracking-widest sm:mb-2 sm:text-xs">
             {car.prod_year}
           </span>
 
           {/* Title */}
           <h3
             className={cn(
-              "font-display font-semibold text-xl leading-tight",
+              "font-display font-semibold text-xs leading-tight sm:text-xl",
               "text-[var(--color-text-primary)]",
-              "mb-1 line-clamp-2",
+              "line-clamp-1 sm:mb-1 sm:line-clamp-2",
             )}
           >
             {manufacturerName} {modelName}
@@ -356,10 +358,10 @@ export const CarCard = ({
         {/* Price + Specs + Footer Group */}
         <div>
           {/* Price Section */}
-          <div className="mt-3 mb-5">
+          <div className="mt-1 mb-2 sm:mt-3 sm:mb-5">
             <p
               className={cn(
-                "font-bold font-display text-3xl tracking-tight",
+                "font-bold font-display text-base tracking-tight sm:text-3xl",
                 "bg-gradient-to-r from-[var(--color-accent-primary)] to-[var(--color-accent-secondary)] bg-clip-text text-transparent",
               )}
             >
@@ -368,7 +370,7 @@ export const CarCard = ({
             {car.has_predicted_price &&
               car.predicted_price != null &&
               car.price_usd < car.predicted_price && (
-                <p className="mt-1 text-[var(--color-text-muted)] text-sm">
+                <p className="mt-1 hidden text-[var(--color-text-muted)] text-sm sm:block">
                   <span className="line-through">
                     {formatPrice(car.predicted_price)}
                   </span>
@@ -379,8 +381,8 @@ export const CarCard = ({
               )}
           </div>
 
-          {/* Specs Grid */}
-          <div className="mb-5 grid grid-cols-2 gap-3">
+          {/* Specs Grid - Hidden on mobile */}
+          <div className="mb-5 hidden grid-cols-2 gap-3 sm:grid">
             <div className="flex items-center gap-2 text-[var(--color-text-secondary)] text-sm">
               <GaugeIcon className="h-4 w-4 text-[var(--color-accent-primary)]/60" />
               <span>{formatKilometers(car.car_run_km)}</span>
@@ -399,13 +401,13 @@ export const CarCard = ({
             </div>
           </div>
 
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-accent-primary)]/20 to-transparent" />
+          {/* Divider - Hidden on mobile */}
+          <div className="hidden h-px bg-gradient-to-r from-transparent via-[var(--color-accent-primary)]/20 to-transparent sm:block" />
 
           {/* Footer */}
-          <div className="mt-4 flex items-center justify-between">
-            {/* Views */}
-            <div className="flex items-center gap-2 text-[var(--color-text-muted)] text-sm">
+          <div className="flex items-center justify-between sm:mt-4">
+            {/* Views - Hidden on mobile */}
+            <div className="hidden items-center gap-2 text-[var(--color-text-muted)] text-sm sm:flex">
               <EyeIcon className="h-4 w-4 text-[var(--color-accent-primary)]/50" />
               <span>{car.views.toLocaleString()} views</span>
             </div>
@@ -416,10 +418,10 @@ export const CarCard = ({
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "inline-flex items-center gap-1.5",
-                "rounded-full px-4 py-2",
+                "inline-flex w-full items-center justify-center gap-1 sm:w-auto sm:gap-1.5",
+                "rounded-full px-3 py-1 sm:px-4 sm:py-2",
                 "border border-[var(--color-accent-primary)]/20 bg-[var(--color-accent-tertiary)]",
-                "font-medium text-[var(--color-accent-primary)] text-sm",
+                "font-medium text-[10px] text-[var(--color-accent-primary)] sm:text-sm",
                 "transition-all duration-200",
                 "hover:bg-[var(--color-accent-primary)] hover:text-[var(--color-text-inverse)]",
                 "group/link",
@@ -429,7 +431,7 @@ export const CarCard = ({
               <span>View</span>
               <ArrowUpRightIcon
                 className={cn(
-                  "h-3.5 w-3.5",
+                  "h-2.5 w-2.5 sm:h-3.5 sm:w-3.5",
                   "transition-transform duration-200",
                   "group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5",
                 )}
