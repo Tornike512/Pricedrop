@@ -1,3 +1,12 @@
+## 1.9.0 (2026-01-02)
+
+* feat: add smooth scroll to top on page change in ListingsPage ([e44b2e6](https://github.com/Tornike512/Pricedrop/commit/e44b2e6))
+* feat: enhance CarCard layout for improved readability and structure ([55dbe5b](https://github.com/Tornike512/Pricedrop/commit/55dbe5b))
+* feat: reduce logo size in CarsPage for better layout consistency ([4e42af5](https://github.com/Tornike512/Pricedrop/commit/4e42af5))
+* feat: replace button element with Button component in Dropdown for consistency ([9394feb](https://github.com/Tornike512/Pricedrop/commit/9394feb))
+* feat: update CarCard component to display badge for low view count ([58b6ebe](https://github.com/Tornike512/Pricedrop/commit/58b6ebe))
+* feat: update version to 1.8.0 and enhance changelog for clarity ([311c101](https://github.com/Tornike512/Pricedrop/commit/311c101))
+
 ## 1.8.0 (2026-01-01)
 
 * feat: update changelog for version 1.7.0 and enhance car sorting functionality ([24848f3](https://github.com/Tornike512/Pricedrop/commit/24848f3))
